@@ -3,7 +3,7 @@
 #include "core/ball.h"
 #include <cmath>
 
-namespace idealgas {
+namespace pool {
 
 namespace visualizer {
 
@@ -68,6 +68,8 @@ class Board {
 
   bool CheckIfPocketed(Ball& ball);
 
+  void UpdateMousePosition(const glm::vec2& mouse_coords);
+
 
  private:
 
@@ -90,6 +92,8 @@ class Board {
   glm::vec2 mouse_;
 
   std::vector<glm::vec2> pockets_;
+
+  bool next_turn_;
 };
 }  // namespace visualizer
-}  // namespace idealgas
+}  // namespace pool

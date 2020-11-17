@@ -2,7 +2,7 @@
 #include <vector>
 using glm::vec2;
 
-namespace idealgas {
+namespace pool {
 
 namespace visualizer {
 
@@ -14,6 +14,7 @@ Board::Board(const vec2 &top_left_corner, double x_boundary_dim, double y_bounda
   sim_y_bound_length_ = y_boundary_dim;
   init_num_particles_ = init_num_particles;
   max_particle_velocity_ = max_velocity;
+  next_turn_ = true;
   //ocketed_balls_ = {}; //start with no pocketed balls
   mouse_ = vec2 (0,0);
 
@@ -26,6 +27,9 @@ Board::Board(const vec2 &top_left_corner, double x_boundary_dim, double y_bounda
                                ci::Color(sim_particle_colors_[0]), Type::Red));
   }
 
+
+
+  //position of pockets that are at the table
   pockets_.push_back(top_left_corner_);
   pockets_.push_back(top_left_corner_ + vec2(sim_x_bound_length_,0));
   pockets_.push_back(top_left_corner_ + vec2(sim_x_bound_length_,sim_y_bound_length_));
@@ -49,7 +53,6 @@ void Board::Draw() const {
 
 
   //drawing the pockets on the board
-
   for( size_t i = 0; i < pockets_.size(); i++){
     ci::gl::color(ci::Color("black"));
     ci::gl::drawSolidCircle(pockets_.at(i),20);
@@ -58,7 +61,13 @@ void Board::Draw() const {
   }
 
   ci::gl::color(ci::Color("red"));
-  ci::gl::drawLine(game_balls_.at(0).GetPosition(), mouse_);
+  ci::gl::lineWidth(50.0f);
+  //implemented drawing of cue
+  vec2 ball = game_balls_.at(0).GetPosition();
+  vec2 hit_dr =  (mouse_ - ball )/(-1*glm::length(mouse_ - ball));
+
+  ci::gl::drawLine(ball, ball + hit_dr*50.0f);
+
   for (size_t i = 0; i < game_balls_.size(); i++) {
     //drawing each particle
     ci::gl::color(game_balls_.at(i).GetColor());
@@ -68,27 +77,14 @@ void Board::Draw() const {
 
 void Board::HandleClick(const vec2 &clicked_screen_coords) {
   //conditionals to check if clicked location is within simulator boundary
-  mouse_ = clicked_screen_coords;
+  //mouse_ = clicked_screen_coords;
   HandleCueBallHit(game_balls_.at(0), clicked_screen_coords);
-  bool inside_y_bound = clicked_screen_coords.y > top_left_corner_.y
-      && clicked_screen_coords.y < bottom_right_corner_.y;
 
-  bool inside_x_bound = clicked_screen_coords.x > top_left_corner_.x
-      && clicked_screen_coords.x < bottom_right_corner_.x;
-
-  if (inside_x_bound && inside_y_bound) {
-    //adding a particle at the clicked coordinates
-   // AddParticle(clicked_screen_coords, GetRandVelocity(), sim_radii_[2],
-                //sim_particle_mass_[2], ci::Color("blue"),Type::Large);
-
-  }
 }
 
 void Board::Clear() {
   game_balls_.clear();
 }
-
-
 
 void Board::Update() {
   //handles collisions and movement updates
@@ -100,6 +96,7 @@ void Board::Update() {
     game_balls_.at(i).HandleBoundaryCollision(top_left_corner_, bottom_right_corner_);
   }
 
+  //if ball is pocketed, remove balls from gameboard
   for (size_t i = 0; i < game_balls_.size(); i++) {
     if(CheckIfPocketed(game_balls_.at(i))){
       pocketed_balls_.push_back(game_balls_.at(i));
@@ -107,6 +104,16 @@ void Board::Update() {
       i--;
     }
   }
+
+  next_turn_ = true;
+  for (size_t i = 0; i < game_balls_.size(); i++) {
+    if(game_balls_.at(i).HasStopped()==false){
+      next_turn_ = false;
+    }
+  }
+
+
+
 }
 
 glm::vec2 Board::GetRandPosition() const {
@@ -125,7 +132,9 @@ glm::vec2 Board::GetRandVelocity() const {
 }
 
 void Board::HandleCueBallHit(Ball& cue, const glm::vec2& mouse_coords) {
-  cue.SetVelocity(.01f*(mouse_coords-cue.GetPosition()));
+  if(next_turn_ == true) {
+    cue.SetVelocity(10.0f * (mouse_coords - cue.GetPosition())/glm::length(mouse_coords - cue.GetPosition()));
+  }
 }
 
 
@@ -145,10 +154,13 @@ bool Board::CheckIfPocketed(Ball &ball) {
   return false;
 }
 
+void Board::UpdateMousePosition(const glm::vec2 &mouse_coords) {
+  mouse_ = mouse_coords;
+}
 
 
 
 
 
 }  // namespace visualizer
-}  // namespace idealgas
+}  // namespace pool
