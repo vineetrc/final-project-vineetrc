@@ -7,7 +7,7 @@
 
 #include <cmath>
 
-namespace idealgas {
+namespace pool {
 
 /**
  * Represents ID for the 3 particle types in the simulator
@@ -38,6 +38,8 @@ class Ball {
    */
   void UpdatePosition();
 
+  bool HasStopped();
+
   double GetSpeed() const;
 
   glm::vec2 GetVelocity() const;
@@ -63,12 +65,11 @@ class Ball {
 
   Type type_;
 
-//  b2Body* hi;
-
   /**
    * Helper method that changes velocities when a collision occurs
    */
   void UpdateVelocitiesAfterCollision(const glm::vec2& x_diff_this, const glm::vec2& x_diff_other,
                                       double dot_product_this, double dot_product_other, Ball& other);
+
 };
-}//namespace idealgas
+}//namespace pool
