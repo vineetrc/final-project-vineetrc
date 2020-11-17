@@ -4,7 +4,7 @@
 #include "cinder/gl/gl.h"
 #include "board.h"
 
-namespace idealgas {
+namespace pool {
 
 namespace visualizer {
 
@@ -12,24 +12,24 @@ namespace visualizer {
  * Allows a user to draw a digit on a sketchpad and uses Naive Bayes to
  * classify it.
  */
-class IdealGasApp : public ci::app::App {
+class PoolApp : public ci::app::App {
  public:
-  IdealGasApp();
+  PoolApp();
 
   void draw() override;
   void update() override;
   void mouseDown(ci::app::MouseEvent event) override;
   void keyDown(ci::app::KeyEvent event) override;
   void mouseDrag(ci::app::MouseEvent event) override;
-
+  void mouseMove(ci::app::MouseEvent event) override;
   const double kWindowSize = 900; //875
   const double kMargin = 10; //100
 
  private:
-  Board gas_sim_;
+  Board game_board_;
 
   size_t update_speed_;
 
 };
 }  // namespace visualizer
-}  // namespace idealgas
+}  // namespace pool
