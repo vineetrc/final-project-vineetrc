@@ -75,7 +75,7 @@ list(APPEND TEST_FILES tests/particle_collision_test.cc tests/simulator_test.cc)
 #target_link_libraries(mytarget PRIVATE box2d)
 
 ci_make_app(
-        APP_NAME        Ideal-Gas-Sim
+        APP_NAME        Pool-Game
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         apps/cinder_app_main.cc ${SOURCE_FILES}
         INCLUDES        include
