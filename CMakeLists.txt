@@ -56,7 +56,7 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
         src/visualizer/pool_app.cc
         src/visualizer/board.cc)
 
-list(APPEND TEST_FILES tests/particle_collision_test.cc tests/simulator_test.cc)
+list(APPEND TEST_FILES tests/ball_physics_test.cc tests/simulator_test.cc)
 
 #FetchContent_Declare(
 #        box2d
