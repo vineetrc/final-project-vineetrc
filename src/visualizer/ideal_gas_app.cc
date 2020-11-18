@@ -16,6 +16,11 @@ PoolApp::PoolApp()
 void PoolApp::draw() {
   ci::Color8u background_color(255, 246, 148);  // light yellow
   ci::gl::clear(background_color);
+  std::string game_message = "Play in progress";
+  if(game_board_.GetTurnStatus()==true){
+    game_message = "hit the cue ball";
+  }
+  ci::gl::drawStringCentered(game_message,glm::vec2(300,700),ci::Color("black"));
 
   game_board_.Draw();
 }
