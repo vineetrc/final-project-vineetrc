@@ -24,8 +24,7 @@ class Board {
    * @param boundary_dim side length dimension of simulation
    * @param init_num_particles number of initial particles of each type in simulation
    */
-  Board(const glm::vec2& top_left_corner, double x_boundary_dim, double y_boundary_dim, size_t init_num_particles,
-        size_t max_velocity, ci::Color background_color);
+  Board(const glm::vec2& top_left_corner, double x_boundary_dim, double y_boundary_dim);
 
   /**
    * Displays the current state of the simulator in the Cinder application.
@@ -74,19 +73,16 @@ class Board {
 
   double sim_y_bound_length_;
 
-  size_t init_num_particles_; // not needed remove future
 
   std::vector<Ball> game_balls_; // all particles in the simulator
 
   std::vector<Ball> pocketed_balls_; //balls that fell into the pocket every turn
 
-  size_t max_particle_velocity_; //not needed
-
-  glm::vec2 mouse_;
+  glm::vec2 mouse_; // coordinates of the current state of the mouse
 
   std::vector<glm::vec2> pockets_;
 
-  bool next_turn_;
+  bool next_turn_; // represents if player can hit a ball to start a new 'play'
 
   const double stop_point_ = 0.1; // friction parameters
 
