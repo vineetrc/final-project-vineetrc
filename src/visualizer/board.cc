@@ -6,59 +6,60 @@ namespace pool {
 
 namespace visualizer {
 
-Board::Board(const vec2 &top_left_corner, double x_boundary_dim, double y_boundary_dim, size_t init_num_particles,
-             size_t max_velocity, ci::Color background_color) {
+Board::Board(const vec2 &top_left_corner, double x_boundary_dim, double y_boundary_dim) {
   top_left_corner_ = top_left_corner;
   bottom_right_corner_ = top_left_corner_ + vec2(x_boundary_dim, y_boundary_dim);
   sim_x_bound_length_ = x_boundary_dim;
   sim_y_bound_length_ = y_boundary_dim;
-  init_num_particles_ = init_num_particles;
-  max_particle_velocity_ = max_velocity;
-  next_turn_ = true;
+  next_turn_ = true; //always start of with a turn
   pocketed_balls_ = {}; //start with no pocketed balls
   mouse_ = vec2 (0,0);
 
   //cue ball is first in the list of game balls
-  game_balls_.push_back(Ball(vec2(300, 350), sim_radii_[0],
+  glm::vec2 cueball_pos = top_left_corner_ + vec2(.25*x_boundary_dim, .5*y_boundary_dim);
+  game_balls_.push_back(Ball(cueball_pos, sim_radii_[0],
                              ci::Color("white"), Type::Cue));
+
+  // arranging triangle formation
+
+  glm::vec2 break_position = top_left_corner_ + vec2(.75*x_boundary_dim,
+                                                     .50*y_boundary_dim - 2.5*sim_radii_[0]);
+
   //1st row
-  //for (size_t i = 0; i < init_num_particles_; i++) {
-  game_balls_.push_back(Ball(vec2(850, 300+0*20), sim_radii_[0],
+  game_balls_.push_back(Ball(break_position+ vec2(0,0), sim_radii_[0],
                                ci::Color(sim_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(vec2(850, 300+1*20), sim_radii_[0],
+  game_balls_.push_back(Ball(break_position+ vec2(0,1*20), sim_radii_[0],
                              ci::Color(sim_particle_colors_[1]), Type::Blue));
-  game_balls_.push_back(Ball(vec2(850, 300+2*20), sim_radii_[0],
+  game_balls_.push_back(Ball(break_position+ vec2(0,2*20), sim_radii_[0],
                              ci::Color(sim_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(vec2(850, 300+3*20), sim_radii_[0],
+  game_balls_.push_back(Ball(break_position+ vec2(0,3*20), sim_radii_[0],
                              ci::Color(sim_particle_colors_[1]), Type::Blue));
-  game_balls_.push_back(Ball(vec2(850, 300+4*20), sim_radii_[0],
+  game_balls_.push_back(Ball(break_position+ vec2(0,4*20), sim_radii_[0],
                              ci::Color(sim_particle_colors_[0]), Type::Red));
   //2nd row
-  game_balls_.push_back(Ball(vec2(830, 310+0*20), sim_radii_[0],
+  game_balls_.push_back(Ball(break_position+ vec2(-20,10), sim_radii_[0],
                              ci::Color(sim_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(vec2(830, 310+1*20), sim_radii_[0],
+  game_balls_.push_back(Ball(break_position+ vec2(-20,10+1*20), sim_radii_[0],
                              ci::Color(sim_particle_colors_[1]), Type::Blue));
-  game_balls_.push_back(Ball(vec2(830, 310+2*20), sim_radii_[0],
+  game_balls_.push_back(Ball(break_position+ vec2(-20,10+2*20), sim_radii_[0],
                              ci::Color(sim_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(vec2(830, 310+3*20), sim_radii_[0],
+  game_balls_.push_back(Ball(break_position+ vec2(-20,10+3*20), sim_radii_[0],
                              ci::Color(sim_particle_colors_[1]), Type::Blue));
   //3rd row
-  game_balls_.push_back(Ball(vec2(810, 320+0*20), sim_radii_[0],
+  game_balls_.push_back(Ball(break_position+ vec2(-40,20+0*20), sim_radii_[0],
                              ci::Color(sim_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(vec2(810, 320+1*20), sim_radii_[0],
+  game_balls_.push_back(Ball(break_position+ vec2(-40,20+1*20), sim_radii_[0],
                              ci::Color(sim_particle_colors_[2]), Type::EightBall));
-  game_balls_.push_back(Ball(vec2(810, 320+2*20), sim_radii_[0],
+  game_balls_.push_back(Ball(break_position+ vec2(-40,20+2*20), sim_radii_[0],
                              ci::Color(sim_particle_colors_[1]), Type::Blue));
-
-  game_balls_.push_back(Ball(vec2(790, 330+0*20), sim_radii_[0],
+  //4th row
+  game_balls_.push_back(Ball(break_position+ vec2(-60,30+0*20), sim_radii_[0],
                              ci::Color(sim_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(vec2(790, 330+1*20), sim_radii_[0],
+  game_balls_.push_back(Ball(break_position+ vec2(-60,30+1*20), sim_radii_[0],
                              ci::Color(sim_particle_colors_[1]), Type::Blue));
-
-  game_balls_.push_back(Ball(vec2(770, 340+0*20), sim_radii_[0],
+  //5th row
+  game_balls_.push_back(Ball(break_position+ vec2(-80,40+0*20), sim_radii_[0],
                              ci::Color(sim_particle_colors_[1]), Type::Blue));
-  ;
-  //}
 
   //position of pockets that are at the table
   pockets_.push_back(top_left_corner_);
@@ -70,18 +71,17 @@ Board::Board(const vec2 &top_left_corner, double x_boundary_dim, double y_bounda
 }
 
 void Board::Draw() const {
-
   //draw brown outer table
   ci::gl::color(ci::Color("brown"));
   glm::vec2 tl = top_left_corner_ + vec2(-50,-50);
   glm::vec2 br = bottom_right_corner_ + vec2(50,50);
   ci::Rectf box(tl, br);
   ci::gl::drawSolidRoundedRect(box, 20);
+
   //draw green background
   ci::Rectf pixel_bounding_box(top_left_corner_, bottom_right_corner_);
   ci::gl::color(ci::Color("green"));
   ci::gl::drawSolidRect(pixel_bounding_box);
-
 
   //drawing the pockets on the board
   for( size_t i = 0; i < pockets_.size(); i++){
@@ -91,8 +91,7 @@ void Board::Draw() const {
     ci::gl::drawStrokedCircle(pockets_.at(i),20);
   }
 
-  ci::gl::color(ci::Color("red"));
-  ci::gl::lineWidth(50.0f);
+  //ci::gl::color(ci::Color("red"));
   //implemented drawing of cue
   vec2 ball = game_balls_.at(0).GetPosition();
   vec2 hit_dr =  (mouse_ - ball )/(-1*glm::length(mouse_ - ball));
@@ -145,6 +144,7 @@ void Board::Update() {
 
 void Board::HandleCueBallHit(Ball& cue, const glm::vec2& mouse_coords) {
   if(next_turn_ == true) {
+    //gives a constant force of 15 to the ball in the specified direction
     cue.SetVelocity(15.0f * (mouse_coords - cue.GetPosition())/glm::length(mouse_coords - cue.GetPosition()));
   }
 }
@@ -158,6 +158,7 @@ bool Board::CheckIfPocketed(Ball &ball) {
   for(size_t i = 0; i< pockets_.size(); i++){
     if(glm::length(ball.GetPosition()-pockets_.at(i))<20){
       if(ball.GetType()!=Type::Cue){
+        //only pocket if ball is cue ball
         return true;
       }
     }
