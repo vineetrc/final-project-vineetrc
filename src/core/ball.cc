@@ -61,30 +61,34 @@ void Ball::HandleBoundaryCollision(const glm::vec2 &top_left, const glm::vec2 &b
   }
 }
 
-void Ball::UpdatePosition() {
+void Ball::UpdatePosition(double stop_point, double force) {
   position_ += velocity_;
+  AddFriction(stop_point, force);
+}
 
-  if (glm::length(velocity_) < .10) {
-    //
+void Ball::AddFriction(double stop_point, double force) {
+  if (glm::length(velocity_) < stop_point) {
+    //set velocity to 0 once vector goes below threshold
     velocity_ = glm::vec2(0, 0);
   } else {
     if (velocity_.y < 0) {
 
-      velocity_.y += .01 * std::abs(velocity_.y);
+      velocity_.y += force * std::abs(velocity_.y);
 
     } else if (velocity_.y > 0) {
-      velocity_.y -= .01 * std::abs(velocity_.y);
+      velocity_.y -= force * std::abs(velocity_.y);
     }
     if (velocity_.x < 0) {
 
-      velocity_.x += .01 * std::abs(velocity_.x);
+      velocity_.x += force * std::abs(velocity_.x);
 
     } else if (velocity_.x > 0) {
 
-      velocity_.x -= .01 * std::abs(velocity_.x);
+      velocity_.x -= force * std::abs(velocity_.x);
     }
   }
 }
+
 
 glm::vec2 Ball::GetPosition() const {
   return position_;
@@ -117,4 +121,29 @@ bool Ball::HasStopped() {
   //checks when all the ball have stopped moving
   return glm::vec2(0, 0) == velocity_;
 }
+
+
+
+//if (glm::length(velocity_) < .10) {
+////
+//velocity_ = glm::vec2(0, 0);
+//} else {
+//if (velocity_.y < 0) {
+//
+//velocity_.y += .01 * std::abs(velocity_.y);
+//
+//} else if (velocity_.y > 0) {
+//velocity_.y -= .01 * std::abs(velocity_.y);
+//}
+//if (velocity_.x < 0) {
+//
+//velocity_.x += .01 * std::abs(velocity_.x);
+//
+//} else if (velocity_.x > 0) {
+//
+//velocity_.x -= .01 * std::abs(velocity_.x);
+//}
+//}
+
+
 } //namespace pool

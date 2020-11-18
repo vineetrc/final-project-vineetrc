@@ -18,7 +18,7 @@ class Ball {
  public:
 
   /**
-   * Creates a particle with a position coordinate, velocity vector, radius, and color
+   * Creates a ball at a position coordinate with the given color and type
    */
   Ball(const glm::vec2 &init_position, size_t radius, ci::Color color ,Type type);
 
@@ -36,7 +36,7 @@ class Ball {
   /**
    * Updates position of particle based on current velocity
    */
-  void UpdatePosition();
+  void UpdatePosition(double stop_point, double force);
 
   bool HasStopped();
 
@@ -70,6 +70,8 @@ class Ball {
    */
   void UpdateVelocitiesAfterCollision(const glm::vec2& x_diff_this, const glm::vec2& x_diff_other,
                                       double dot_product_this, double dot_product_other, Ball& other);
+
+  void AddFriction(double stop_point, double force);
 
 };
 }//namespace pool
