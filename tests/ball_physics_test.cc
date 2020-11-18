@@ -235,3 +235,33 @@ TEST_CASE("Ball Collisions", "[Particle]") {
     }
   }
 }
+TEST_CASE("Ball Friction"){
+  // friction coefficients used
+  double stop_point = 5;
+  double friction_force = .30;
+
+  pool::Ball ball1(vec2(20, 20), 2, def_color, type);
+
+  SECTION("Test Ball Slow Down"){
+    ball1.SetVelocity(vec2(10,10));
+    ball1.UpdatePosition(stop_point, friction_force);
+
+    REQUIRE(ball1.GetVelocity().x == Approx(7.0).margin(1e-3));
+    REQUIRE(ball1.GetVelocity().y == Approx(7.0).margin(1e-3));
+  }
+  SECTION("Test Ball Stop Down"){
+    ball1.SetVelocity(vec2(1,1)); // velocity below stop-threshold
+    ball1.UpdatePosition(stop_point, friction_force);
+    REQUIRE(ball1.GetVelocity().x == Approx(0.0).margin(1e-3)); // velocity should be 0
+    REQUIRE(ball1.GetVelocity().y == Approx(0.0).margin(1e-3));
+  }
+
+  SECTION("Test Ball Position Update"){
+    ball1.SetVelocity(vec2(10,10));
+    ball1.UpdatePosition(stop_point, friction_force);
+    ball1.UpdatePosition(stop_point, friction_force);
+
+    REQUIRE(ball1.GetPosition().x == Approx(37.0).margin(1e-3));
+    REQUIRE(ball1.GetPosition().y == Approx(37.0).margin(1e-3));
+  }
+}
