@@ -1,11 +1,12 @@
+#pragma once
 #ifndef NAIVE_BAYES_PARTICLE_H
 #define NAIVE_BAYES_PARTICLE_H
 #endif //NAIVE_BAYES_PARTICLE_H
 #include "cinder/gl/gl.h"
+#include <cmath>
+
 //#include <Box2D/Box2D.h>
 //#include <cairo/Cairo.h>
-
-#include <cmath>
 
 namespace pool {
 
