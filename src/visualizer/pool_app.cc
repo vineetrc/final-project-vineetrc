@@ -48,7 +48,6 @@ void PoolApp::mouseMove(ci::app::MouseEvent event) {
 void PoolApp::keyDown(ci::app::KeyEvent event) {
   switch (event.getCode()) {
     case ci::app::KeyEvent::KEY_r: {
-     // game_board_.AddParticle(game_board_.GetRandPosition(), game_board_.GetRandVelocity(),sim_radii_[0],sim_particle_mass_[0],ci::Color(sim_particle_colors_[0]),Type::Small);
       break;
     }
 
