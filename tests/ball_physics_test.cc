@@ -249,6 +249,7 @@ TEST_CASE("Ball Friction"){
     REQUIRE(ball1.GetVelocity().x == Approx(7.0).margin(1e-3));
     REQUIRE(ball1.GetVelocity().y == Approx(7.0).margin(1e-3));
   }
+
   SECTION("Test Ball Stop Down"){
     ball1.SetVelocity(vec2(1,1)); // velocity below stop-threshold
     ball1.UpdatePosition(stop_point, friction_force);
