@@ -8,9 +8,8 @@ namespace pool {
 namespace visualizer {
 
  // constants for the 3 different types of particles
- static const std::vector<double> sim_particle_mass_ = {1,5,10};
- static const std::vector<double> sim_radii_ = {10,15,20};
- static const std::vector<ci::Color> sim_particle_colors_ = {"red","green","blue"};
+ static const std::vector<double> sim_radii_ = {10};
+ static const std::vector<ci::Color> sim_particle_colors_ = {"red", "blue", "black"};
 
 /**
  * A Board that represents the environment in which the gas particles interact
@@ -50,16 +49,6 @@ class Board {
 
 
   /**
-   * Returns a random point within the simulation bounds
-   */
-  glm::vec2 GetRandPosition() const;
-
-  /**
-   * Returns a random velocity within the range [-max_particle_velocity_, max_particle_velocity_]
-   */
-  glm::vec2 GetRandVelocity() const;
-
-  /**
    * Getter method that returns particles in simulation. Used for Testing
    */
   std::vector<Ball> GetParticles() const;
@@ -70,6 +59,10 @@ class Board {
 
   void UpdateMousePosition(const glm::vec2& mouse_coords);
 
+  /**
+   * Returns true when the balls have come to a stop and is awaiting another hit
+   */
+  bool GetTurnStatus();
 
  private:
 
@@ -94,6 +87,10 @@ class Board {
   std::vector<glm::vec2> pockets_;
 
   bool next_turn_;
+
+  const double stop_point_ = 0.1; // friction parameters
+
+  const double friction_force_ = .01; //friction parameters
 };
 }  // namespace visualizer
 }  // namespace pool
