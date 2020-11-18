@@ -8,8 +8,8 @@ namespace pool {
 namespace visualizer {
 
  // constants for the 3 different types of particles
- static const std::vector<double> sim_radii_ = {10};
- static const std::vector<ci::Color> sim_particle_colors_ = {"red", "blue", "black"};
+ static const std::vector<double> ball_radii_ = {10};
+ static const std::vector<ci::Color> game_particle_colors_ = {"red", "blue", "black"};
 
 /**
  * A Board that represents the environment in which the gas particles interact

@@ -17,49 +17,49 @@ Board::Board(const vec2 &top_left_corner, double x_boundary_dim, double y_bounda
 
   //cue ball is first in the list of game balls
   glm::vec2 cueball_pos = top_left_corner_ + vec2(.25*x_boundary_dim, .5*y_boundary_dim);
-  game_balls_.push_back(Ball(cueball_pos, sim_radii_[0],
+  game_balls_.push_back(Ball(cueball_pos, ball_radii_[0],
                              ci::Color("white"), Type::Cue));
 
   // arranging triangle formation
 
   glm::vec2 break_position = top_left_corner_ + vec2(.75*x_boundary_dim,
-                                                     .50*y_boundary_dim - 2.5*sim_radii_[0]);
+                                                     .50*y_boundary_dim - 2.5*ball_radii_[0]);
 
   //1st row
-  game_balls_.push_back(Ball(break_position+ vec2(0,0), sim_radii_[0],
-                               ci::Color(sim_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(break_position+ vec2(0,1*20), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[1]), Type::Blue));
-  game_balls_.push_back(Ball(break_position+ vec2(0,2*20), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(break_position+ vec2(0,3*20), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[1]), Type::Blue));
-  game_balls_.push_back(Ball(break_position+ vec2(0,4*20), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[0]), Type::Red));
+  game_balls_.push_back(Ball(break_position+ vec2(0,0), ball_radii_[0],
+                             ci::Color(game_particle_colors_[0]), Type::Red));
+  game_balls_.push_back(Ball(break_position+ vec2(0,1*20), ball_radii_[0],
+                             ci::Color(game_particle_colors_[1]), Type::Blue));
+  game_balls_.push_back(Ball(break_position+ vec2(0,2*20), ball_radii_[0],
+                             ci::Color(game_particle_colors_[0]), Type::Red));
+  game_balls_.push_back(Ball(break_position+ vec2(0,3*20), ball_radii_[0],
+                             ci::Color(game_particle_colors_[1]), Type::Blue));
+  game_balls_.push_back(Ball(break_position+ vec2(0,4*20), ball_radii_[0],
+                             ci::Color(game_particle_colors_[0]), Type::Red));
   //2nd row
-  game_balls_.push_back(Ball(break_position+ vec2(-20,10), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(break_position+ vec2(-20,10+1*20), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[1]), Type::Blue));
-  game_balls_.push_back(Ball(break_position+ vec2(-20,10+2*20), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(break_position+ vec2(-20,10+3*20), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[1]), Type::Blue));
+  game_balls_.push_back(Ball(break_position+ vec2(-20,10), ball_radii_[0],
+                             ci::Color(game_particle_colors_[0]), Type::Red));
+  game_balls_.push_back(Ball(break_position+ vec2(-20,10+1*20), ball_radii_[0],
+                             ci::Color(game_particle_colors_[1]), Type::Blue));
+  game_balls_.push_back(Ball(break_position+ vec2(-20,10+2*20), ball_radii_[0],
+                             ci::Color(game_particle_colors_[0]), Type::Red));
+  game_balls_.push_back(Ball(break_position+ vec2(-20,10+3*20), ball_radii_[0],
+                             ci::Color(game_particle_colors_[1]), Type::Blue));
   //3rd row
-  game_balls_.push_back(Ball(break_position+ vec2(-40,20+0*20), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(break_position+ vec2(-40,20+1*20), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[2]), Type::EightBall));
-  game_balls_.push_back(Ball(break_position+ vec2(-40,20+2*20), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[1]), Type::Blue));
+  game_balls_.push_back(Ball(break_position+ vec2(-40,20+0*20), ball_radii_[0],
+                             ci::Color(game_particle_colors_[0]), Type::Red));
+  game_balls_.push_back(Ball(break_position+ vec2(-40,20+1*20), ball_radii_[0],
+                             ci::Color(game_particle_colors_[2]), Type::EightBall));
+  game_balls_.push_back(Ball(break_position+ vec2(-40,20+2*20), ball_radii_[0],
+                             ci::Color(game_particle_colors_[1]), Type::Blue));
   //4th row
-  game_balls_.push_back(Ball(break_position+ vec2(-60,30+0*20), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(break_position+ vec2(-60,30+1*20), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[1]), Type::Blue));
+  game_balls_.push_back(Ball(break_position+ vec2(-60,30+0*20), ball_radii_[0],
+                             ci::Color(game_particle_colors_[0]), Type::Red));
+  game_balls_.push_back(Ball(break_position+ vec2(-60,30+1*20), ball_radii_[0],
+                             ci::Color(game_particle_colors_[1]), Type::Blue));
   //5th row
-  game_balls_.push_back(Ball(break_position+ vec2(-80,40+0*20), sim_radii_[0],
-                             ci::Color(sim_particle_colors_[1]), Type::Blue));
+  game_balls_.push_back(Ball(break_position+ vec2(-80,40+0*20), ball_radii_[0],
+                             ci::Color(game_particle_colors_[1]), Type::Blue));
 
   //position of pockets that are at the table
   pockets_.push_back(top_left_corner_);
