@@ -56,7 +56,7 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
         src/visualizer/pool_app.cc
         src/visualizer/board.cc)
 
-list(APPEND TEST_FILES tests/ball_physics_test.cc tests/simulator_test.cc)
+list(APPEND TEST_FILES tests/ball_physics_test.cc tests/board_test.cc)
 
 #FetchContent_Declare(
 #        box2d
@@ -83,7 +83,7 @@ ci_make_app(
 )
 
 ci_make_app(
-        APP_NAME        Ideal-Gas-Sim-test
+        APP_NAME        Pool-Game-Sim-test
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         tests/test_main.cc ${SOURCE_FILES} ${TEST_FILES}
         INCLUDES        include
