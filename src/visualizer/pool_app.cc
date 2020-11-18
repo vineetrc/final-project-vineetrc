@@ -1,12 +1,11 @@
-#include <visualizer/ideal_gas_app.h>
+#include <visualizer/pool_app.h>
 
 namespace pool {
 
 namespace visualizer {
 
 PoolApp::PoolApp()
-    : game_board_(glm::vec2(200, 200), 800 , 300 , 10,
-                  5, ci::Color("white")) {
+    : game_board_(glm::vec2(200, 200), 800 , 300) {
 
   ci::app::setWindowSize(2000, 800);
   update_speed_ = 1; //number of simulation 'steps' gone thru on one update call

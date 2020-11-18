@@ -53,7 +53,7 @@ include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 list(APPEND CORE_SOURCE_FILES src/core/ball.cc)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
-        src/visualizer/ideal_gas_app.cc
+        src/visualizer/pool_app.cc
         src/visualizer/board.cc)
 
 list(APPEND TEST_FILES tests/particle_collision_test.cc tests/simulator_test.cc)

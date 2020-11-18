@@ -1,4 +1,4 @@
-#include <visualizer/ideal_gas_app.h>
+#include <visualizer/pool_app.h>
 
 using pool::visualizer::PoolApp;
 
