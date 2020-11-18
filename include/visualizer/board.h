@@ -63,6 +63,17 @@ class Board {
    */
   bool GetTurnStatus();
 
+  /**
+   * getter for testing
+   */
+  std::vector<Ball> GetGameBalls();
+
+  std::vector<Ball> GetPocketedBalls();
+
+  void AddBall(Ball ball);
+
+  glm::vec2 CalculateHitDirection(const glm::vec2& mouse_coord) const;
+
  private:
 
   glm::vec2 top_left_corner_; // top left corner of the simulation-box
@@ -72,7 +83,6 @@ class Board {
   double sim_x_bound_length_; // side length of simulator boundary
 
   double sim_y_bound_length_;
-
 
   std::vector<Ball> game_balls_; // all particles in the simulator
 
