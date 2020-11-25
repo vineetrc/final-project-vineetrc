@@ -34,7 +34,7 @@ class Board {
   /**
    * Adds particle at clicked coordinates if is within simulation boundary
    */
-  void HandleClick(const glm::vec2& clicked_screen_coords);
+  void HandleClick(const glm::vec2& clicked_screen_coords, float force);
 
   /**
    * Clears all particles in the simulator
@@ -52,7 +52,7 @@ class Board {
    */
   std::vector<Ball> GetParticles() const;
 
-  void HandleCueBallHit(Ball& cue, const glm::vec2& mouse_coords);
+  void HandleCueBallHit(Ball& cue, const glm::vec2& mouse_coords, float force);
 
   bool CheckIfPocketed(Ball& ball);
 

@@ -19,6 +19,7 @@ class PoolApp : public ci::app::App {
   void draw() override;
   void update() override;
   void mouseDown(ci::app::MouseEvent event) override;
+  void mouseUp(ci::app::MouseEvent event) override;
   void keyDown(ci::app::KeyEvent event) override;
   void mouseDrag(ci::app::MouseEvent event) override;
   void mouseMove(ci::app::MouseEvent event) override;
@@ -27,7 +28,8 @@ class PoolApp : public ci::app::App {
 
  private:
   Board game_board_;
-
+  glm::vec2 init_coords;
+  glm::vec2 end_coords;
   size_t update_speed_;
 
 };

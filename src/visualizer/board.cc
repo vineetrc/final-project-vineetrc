@@ -92,9 +92,10 @@ void Board::Draw() const {
   }
 
   //implemented drawing of cue
+  ci::gl::color(ci::Color("brown"));
   vec2 hit_dr = CalculateHitDirection(mouse_);
   if(next_turn_ == true) {
-    ci::gl::drawLine(game_balls_.at(0).GetPosition(), game_balls_.at(0).GetPosition() + hit_dr * 50.0f);
+    ci::gl::drawLine(game_balls_.at(0).GetPosition(), game_balls_.at(0).GetPosition() + hit_dr * 100.0f);
   }
 
   for (size_t i = 0; i < game_balls_.size(); i++) {
@@ -104,10 +105,10 @@ void Board::Draw() const {
   }
 }
 
-void Board::HandleClick(const vec2 &clicked_screen_coords) {
+void Board::HandleClick(const vec2 &clicked_screen_coords, float force) {
   //conditionals to check if clicked location is within simulator boundary
   //mouse_ = clicked_screen_coords;
-  HandleCueBallHit(game_balls_.at(0), clicked_screen_coords);
+  HandleCueBallHit(game_balls_.at(0), clicked_screen_coords, force);
 }
 
 void Board::Clear() {
@@ -140,10 +141,10 @@ void Board::Update() {
   }
 }
 
-void Board::HandleCueBallHit(Ball& cue, const glm::vec2& mouse_coords) {
+void Board::HandleCueBallHit(Ball& cue, const glm::vec2& mouse_coords, float force) {
   if(next_turn_ == true) {
     //gives a constant force of 15 to the ball in the specified direction
-    cue.SetVelocity(15.0f * (mouse_coords - cue.GetPosition())/glm::length(mouse_coords - cue.GetPosition()));
+    cue.SetVelocity(force * (mouse_coords - cue.GetPosition())/glm::length(mouse_coords - cue.GetPosition()));
   }
 }
 
