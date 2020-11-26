@@ -22,7 +22,7 @@ Board::Board(const vec2 &top_left_corner, double x_boundary_dim, double y_bounda
 
   // arranging triangle formation
 
-  glm::vec2 break_position = top_left_corner_ + vec2(.75*x_boundary_dim,
+  glm::vec2 break_position = top_left_corner_ + vec2(.85*x_boundary_dim,
                                                      .50*y_boundary_dim - 2.5*ball_radii_[0]);
 
   //1st row
@@ -78,6 +78,17 @@ void Board::Draw() const {
   ci::Rectf box(tl, br);
   ci::gl::drawSolidRoundedRect(box, 20);
 
+//  ci::gl::color(ci::Color("purple"));
+//  ci::Rectf test(100,100,150,150);
+//  ci::gl::drawSolidRoundedRect(test, 20);
+//
+//  ci::gl::pushModelMatrix();
+//  ci::gl::translate(100,125);
+//  ci::gl::rotate(M_PI_4);
+//  ci::gl::color(ci::Color("orange"));
+//  test.set(0,-25,50,25);
+//  ci::gl::drawSolidRect(test);
+//  ci::gl::popModelMatrix();
   //draw green background
   ci::Rectf pixel_bounding_box(top_left_corner_, bottom_right_corner_);
   ci::gl::color(ci::Color("green"));
@@ -92,9 +103,10 @@ void Board::Draw() const {
   }
 
   //implemented drawing of cue
-  ci::gl::color(ci::Color("brown"));
+  ci::gl::color(ci::Color("white"));
   vec2 hit_dr = CalculateHitDirection(mouse_);
   if(next_turn_ == true) {
+    ci::gl::lineWidth(5.0);
     ci::gl::drawLine(game_balls_.at(0).GetPosition(), game_balls_.at(0).GetPosition() + hit_dr * 100.0f);
   }
 
@@ -190,6 +202,11 @@ glm::vec2 Board::CalculateHitDirection(const glm::vec2 &mouse_coord) const {
   vec2 hit_dr =  (mouse_coord - ball )/(-1*glm::length(mouse_coord - ball));
   return hit_dr;
 }
+
+glm::vec2 Board::GetMouseCoords() const {
+  return mouse_;
+}
+
 
 }  // namespace visualizer
 }  // namespace pool

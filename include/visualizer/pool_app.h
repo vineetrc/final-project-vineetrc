@@ -28,8 +28,9 @@ class PoolApp : public ci::app::App {
 
  private:
   Board game_board_;
-  glm::vec2 init_coords;
-  glm::vec2 end_coords;
+  glm::vec2 init_coords_;
+  glm::vec2 end_coords_;
+  double force_;
   size_t update_speed_;
 
 };

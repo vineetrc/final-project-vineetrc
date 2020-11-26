@@ -74,6 +74,8 @@ class Board {
 
   glm::vec2 CalculateHitDirection(const glm::vec2& mouse_coord) const;
 
+  glm::vec2 GetMouseCoords() const;
+
  private:
 
   glm::vec2 top_left_corner_; // top left corner of the simulation-box
@@ -96,7 +98,7 @@ class Board {
 
   const double stop_point_ = 0.1; // friction parameters
 
-  const double friction_force_ = .01; //friction parameters
+  const double friction_force_ = .0125; //friction parameters
 };
 }  // namespace visualizer
 }  // namespace pool
