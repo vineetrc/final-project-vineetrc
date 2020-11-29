@@ -3,6 +3,7 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "board.h"
+#include "core/engine.h"
 
 namespace pool {
 
@@ -32,7 +33,7 @@ class PoolApp : public ci::app::App {
   glm::vec2 end_coords_;
   double force_;
   size_t update_speed_;
-
+  Engine game_engine_;
 };
 }  // namespace visualizer
 }  // namespace pool
