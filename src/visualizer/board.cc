@@ -89,6 +89,7 @@ void Board::Draw() const {
 //  test.set(0,-25,50,25);
 //  ci::gl::drawSolidRect(test);
 //  ci::gl::popModelMatrix();
+
   //draw green background
   ci::Rectf pixel_bounding_box(top_left_corner_, bottom_right_corner_);
   ci::gl::color(ci::Color("green"));
@@ -127,6 +128,10 @@ void Board::Clear() {
   game_balls_.clear();
 }
 
+void Board::ClearPocketedBalls(){
+  pocketed_balls_.clear();
+}
+
 void Board::Update() {
   //handles collisions and movement updates
   for (size_t i = 0; i < game_balls_.size(); i++) {
@@ -155,7 +160,6 @@ void Board::Update() {
 
 void Board::HandleCueBallHit(Ball& cue, const glm::vec2& mouse_coords, float force) {
   if(next_turn_ == true) {
-    //gives a constant force of 15 to the ball in the specified direction
     cue.SetVelocity(force * (mouse_coords - cue.GetPosition())/glm::length(mouse_coords - cue.GetPosition()));
   }
 }
@@ -167,7 +171,7 @@ std::vector<Ball> Board::GetParticles() const {
 bool Board::CheckIfPocketed(Ball &ball) {
   //if ball is pocketed add it to the pockets_ vector
   for(size_t i = 0; i< pockets_.size(); i++){
-    if(glm::length(ball.GetPosition()-pockets_.at(i))<20){
+    if(glm::length(ball.GetPosition()-pockets_.at(i))<30){
       if(ball.GetType()!=Type::Cue){
         //only pocket if ball is cue ball
         return true;
@@ -192,6 +196,7 @@ std::vector<Ball> Board::GetGameBalls() {
 std::vector<Ball> Board::GetPocketedBalls() {
   return pocketed_balls_;
 }
+
 
 void Board::AddBall(Ball ball) {
   game_balls_.push_back(ball);
