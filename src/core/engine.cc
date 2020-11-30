@@ -12,6 +12,7 @@ namespace pool{
     red_ball_player_ = 0;
     blue_ball_player_ = 0;
     has_changed_ = false;
+    player_one_win_ = 0; // corresponds to no winner
   }
 
   void Engine::Update(visualizer::Board &game_board){
@@ -22,6 +23,30 @@ namespace pool{
       CalculatePlayerBalls(game_board);
     }
     std::vector<size_t> counts = CountBallTypes(game_board);
+
+    // determines if player one wins due to pocketing 8 ball
+    if(player_one_turn_){
+      if(counts[3] == 1){
+        if(player_one_score_ == 7){
+          player_one_win_ = 1;
+        }
+        else{
+          player_one_win_ = 2;
+        }
+      }
+    }
+
+    // determines if player two wins due to pocketing 8 ball
+    if(!player_one_turn_){
+      if(counts[3] == 1){
+        if(player_two_score_ == 7){
+            player_one_win_ = 2;
+        }
+        else{
+            player_one_win_ = 1;
+        }
+      }
+    }
 
     if(red_ball_player_ == 1) {
       // player one has control of red balls
@@ -119,6 +144,30 @@ int Engine::GetBlueBallPlayer() const {
     return blue_ball_player_;
 }
 
+ci::Color Engine::GetPlayerOneColor() const {
+  if(red_ball_player_ == 0){
+    return "grey";
+  }
+  if(red_ball_player_ == 1){
+    return "red";
+  }
+  return "blue";
+}
+
+ci::Color Engine::GetPlayerTwoColor() const {
+  if(red_ball_player_ == 0){
+    return "grey";
+  }
+  if(red_ball_player_ == 2){
+    return "red";
+  }
+  return "blue";
+}
+
+int Engine::GetWinCondition() const {
+    return player_one_win_;
+}
+
 std::vector<size_t> Engine::CountBallTypes(visualizer::Board &game_board) {
   size_t red_count = 0;
   size_t blue_count = 0;
@@ -134,10 +183,11 @@ std::vector<size_t> Engine::CountBallTypes(visualizer::Board &game_board) {
     if(game_board.GetPocketedBalls()[i].GetType() == Type::Cue){
       cue_count ++;
     }
-    if(game_board.GetPocketedBalls()[i].GetType() == Type::Cue){
+    if(game_board.GetPocketedBalls()[i].GetType() == Type::EightBall){
       eight_ball_count ++;
     }
   }
   return {red_count,blue_count,cue_count,eight_ball_count};
   }
 }
+

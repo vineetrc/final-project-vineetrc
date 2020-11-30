@@ -22,6 +22,12 @@ class Engine {
 
   int GetPlayerTwoScore() const;
 
+  ci::Color GetPlayerOneColor() const;
+
+  ci::Color GetPlayerTwoColor() const;
+
+  int GetWinCondition() const;
+
  private:
 
   bool player_one_turn_;
@@ -38,7 +44,7 @@ class Engine {
 
   int blue_ball_player_;
 
-  //int has_winner; // returns 1 or 2 depending on which player won, 0 if there is no winner
+  int player_one_win_; // returns 1 or 2 depending on which player won, 0 if there is no winner
 
   void CalculatePlayerBalls(visualizer::Board &game_board);
 
