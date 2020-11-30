@@ -24,12 +24,18 @@ void PoolApp::draw() {
   }
 
   std::string game_message = "Play in progress";
-  std::string power = "n/a";
+  //std::string power = "n/a";
   if(game_board_.GetTurnStatus()==true){
     game_message = "hit the cue ball";
-    power = std::to_string(force_);
+    //power = std::to_string(force_);
+  }
+  if(game_engine_.GetWinCondition()== 1){
+    game_message = "player one Wins";
   }
 
+  if(game_engine_.GetWinCondition()== 2){
+    game_message = "player two Wins";
+  }
   //game stats mainly for manual testing
   ci::gl::drawStringCentered(std::to_string(game_engine_.GetRedBallPlayer()) + "red",glm::vec2(getWindowWidth()*.4,90),ci::Color("black"));
   ci::gl::drawStringCentered(std::to_string(game_engine_.GetBlueBallPlayer()) + "blue",glm::vec2(getWindowWidth()*.6,90),ci::Color("black"));
@@ -38,7 +44,7 @@ void PoolApp::draw() {
 
 
   ci::gl::drawStringCentered(game_message,glm::vec2(getWindowWidth()*.5,50),ci::Color("black"));
-  ci::gl::drawStringCentered(power,glm::vec2(getWindowWidth()*.5,70),ci::Color("black"));
+  //ci::gl::drawStringCentered(power,glm::vec2(getWindowWidth()*.5,70),ci::Color("black"));
   ci::gl::drawStringCentered(player_turn,glm::vec2(getWindowWidth()*.5,80),ci::Color("black"));
 
   // drawing ball racks for players
@@ -49,12 +55,15 @@ void PoolApp::draw() {
   ci::Rectf player_two_rack(getWindowWidth()*.92, getWindowHeight()*.3, getWindowWidth()*.95, getWindowHeight()*.7 );
   ci::gl::drawSolidRoundedRect(player_two_rack, 20);
 
-  ci::gl::color(ci::Color("red"));
+  //displaying balls remaining for player one
   for(int i = 0; i < 7 - game_engine_.GetPlayerOneScore(); i++){
+    ci::gl::color(game_engine_.GetPlayerOneColor());
     ci::gl::drawSolidCircle(glm::vec2(getWindowWidth()*.065, getWindowHeight()*.3 + 20 + i*40), 20);
   }
+
+  // displaying balls remaining for player two
   for(int i = 0; i < 7 - game_engine_.GetPlayerTwoScore(); i++){
-    ci::gl::color(ci::Color("blue"));
+    ci::gl::color(game_engine_.GetPlayerTwoColor());
     ci::gl::drawSolidCircle(glm::vec2(getWindowWidth()*.935, getWindowHeight()*.3 + 20 + i*40), 20);
   }
 
@@ -70,7 +79,7 @@ void PoolApp::draw() {
   bottom_right.x = getWindowWidth()*.5 - 120 + 240*(force_/20.0);
   ci::Rectf power_bar(top_left,bottom_right);
   ci::gl::drawSolidRoundedRect(power_bar, 20);
-  ci::gl::drawStringCentered(std::to_string(force_/20.0).substr(0,4)+"%",glm::vec2(getWindowWidth()*.5,getWindowHeight()*.85+25),ci::Color("black"));
+  ci::gl::drawStringCentered(std::to_string((force_/20.0)*100).substr(0,4)+"%",glm::vec2(getWindowWidth()*.5,getWindowHeight()*.85+25),ci::Color("black"));
 
 
   game_board_.Draw();
@@ -89,10 +98,11 @@ void PoolApp::mouseDrag(ci::app::MouseEvent event) {
 }
 
 void PoolApp::update() {
-  for (size_t i = 0; i < update_speed_; i++) {
-    game_board_.Update();
-  }
-
+  //if(game_engine_.GetWinCondition()==0) {
+    for (size_t i = 0; i < update_speed_; i++) {
+      game_board_.Update();
+    }
+  //}
   game_engine_.Update(game_board_);
 }
 
