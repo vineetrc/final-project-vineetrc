@@ -1,10 +1,10 @@
-#include <visualizer/ideal_gas_app.h>
+#include <visualizer/pool_app.h>
 
-using idealgas::visualizer::IdealGasApp;
+using pool::visualizer::PoolApp;
 
-void prepareSettings(IdealGasApp::Settings* settings) {
+void prepareSettings(PoolApp::Settings* settings) {
   settings->setResizable(false);
 }
 
 // This line is a macro that expands into an "int main()" function.
-CINDER_APP(IdealGasApp, ci::app::RendererGl, prepareSettings);
+CINDER_APP(PoolApp, ci::app::RendererGl, prepareSettings);

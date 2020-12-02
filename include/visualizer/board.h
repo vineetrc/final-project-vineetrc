@@ -3,14 +3,13 @@
 #include "core/ball.h"
 #include <cmath>
 
-namespace idealgas {
+namespace pool {
 
 namespace visualizer {
 
  // constants for the 3 different types of particles
- static const std::vector<double> sim_particle_mass_ = {1,5,10};
- static const std::vector<double> sim_radii_ = {10,15,20};
- static const std::vector<ci::Color> sim_particle_colors_ = {"red","green","blue"};
+ static const std::vector<double> ball_radii_ = {10};
+ static const std::vector<ci::Color> game_particle_colors_ = {"red", "blue", "black"};
 
 /**
  * A Board that represents the environment in which the gas particles interact
@@ -25,8 +24,7 @@ class Board {
    * @param boundary_dim side length dimension of simulation
    * @param init_num_particles number of initial particles of each type in simulation
    */
-  Board(const glm::vec2& top_left_corner, double x_boundary_dim, double y_boundary_dim, size_t init_num_particles,
-        size_t max_velocity, ci::Color background_color);
+  Board(const glm::vec2& top_left_corner, double x_boundary_dim, double y_boundary_dim);
 
   /**
    * Displays the current state of the simulator in the Cinder application.
@@ -50,16 +48,6 @@ class Board {
 
 
   /**
-   * Returns a random point within the simulation bounds
-   */
-  glm::vec2 GetRandPosition() const;
-
-  /**
-   * Returns a random velocity within the range [-max_particle_velocity_, max_particle_velocity_]
-   */
-  glm::vec2 GetRandVelocity() const;
-
-  /**
    * Getter method that returns particles in simulation. Used for Testing
    */
   std::vector<Ball> GetParticles() const;
@@ -68,6 +56,23 @@ class Board {
 
   bool CheckIfPocketed(Ball& ball);
 
+  void UpdateMousePosition(const glm::vec2& mouse_coords);
+
+  /**
+   * Returns true when the balls have come to a stop and is awaiting another hit
+   */
+  bool GetTurnStatus();
+
+  /**
+   * getter for testing
+   */
+  std::vector<Ball> GetGameBalls();
+
+  std::vector<Ball> GetPocketedBalls();
+
+  void AddBall(Ball ball);
+
+  glm::vec2 CalculateHitDirection(const glm::vec2& mouse_coord) const;
 
  private:
 
@@ -79,17 +84,19 @@ class Board {
 
   double sim_y_bound_length_;
 
-  size_t init_num_particles_; // not needed remove future
-
   std::vector<Ball> game_balls_; // all particles in the simulator
 
   std::vector<Ball> pocketed_balls_; //balls that fell into the pocket every turn
 
-  size_t max_particle_velocity_; //not needed
-
-  glm::vec2 mouse_;
+  glm::vec2 mouse_; // coordinates of the current state of the mouse
 
   std::vector<glm::vec2> pockets_;
+
+  bool next_turn_; // represents if player can hit a ball to start a new 'play'
+
+  const double stop_point_ = 0.1; // friction parameters
+
+  const double friction_force_ = .01; //friction parameters
 };
 }  // namespace visualizer
-}  // namespace idealgas
+}  // namespace pool

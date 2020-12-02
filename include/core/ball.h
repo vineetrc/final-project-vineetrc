@@ -1,13 +1,14 @@
+#pragma once
 #ifndef NAIVE_BAYES_PARTICLE_H
 #define NAIVE_BAYES_PARTICLE_H
 #endif //NAIVE_BAYES_PARTICLE_H
 #include "cinder/gl/gl.h"
+#include <cmath>
+
 //#include <Box2D/Box2D.h>
 //#include <cairo/Cairo.h>
 
-#include <cmath>
-
-namespace idealgas {
+namespace pool {
 
 /**
  * Represents ID for the 3 particle types in the simulator
@@ -18,7 +19,7 @@ class Ball {
  public:
 
   /**
-   * Creates a particle with a position coordinate, velocity vector, radius, and color
+   * Creates a ball at a position coordinate with the given color and type
    */
   Ball(const glm::vec2 &init_position, size_t radius, ci::Color color ,Type type);
 
@@ -36,7 +37,9 @@ class Ball {
   /**
    * Updates position of particle based on current velocity
    */
-  void UpdatePosition();
+  void UpdatePosition(double stop_point, double force);
+
+  bool HasStopped();
 
   double GetSpeed() const;
 
@@ -63,12 +66,13 @@ class Ball {
 
   Type type_;
 
-//  b2Body* hi;
-
   /**
    * Helper method that changes velocities when a collision occurs
    */
   void UpdateVelocitiesAfterCollision(const glm::vec2& x_diff_this, const glm::vec2& x_diff_other,
                                       double dot_product_this, double dot_product_other, Ball& other);
+
+  void AddFriction(double stop_point, double force);
+
 };
-}//namespace idealgas
+}//namespace pool

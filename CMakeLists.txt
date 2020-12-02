@@ -53,10 +53,10 @@ include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 list(APPEND CORE_SOURCE_FILES src/core/ball.cc)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
-        src/visualizer/ideal_gas_app.cc
+        src/visualizer/pool_app.cc
         src/visualizer/board.cc)
 
-list(APPEND TEST_FILES tests/particle_collision_test.cc tests/simulator_test.cc)
+list(APPEND TEST_FILES tests/ball_physics_test.cc tests/board_test.cc)
 
 #FetchContent_Declare(
 #        box2d
@@ -75,7 +75,7 @@ list(APPEND TEST_FILES tests/particle_collision_test.cc tests/simulator_test.cc)
 #target_link_libraries(mytarget PRIVATE box2d)
 
 ci_make_app(
-        APP_NAME        Ideal-Gas-Sim
+        APP_NAME        Pool-Game
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         apps/cinder_app_main.cc ${SOURCE_FILES}
         INCLUDES        include
@@ -83,7 +83,7 @@ ci_make_app(
 )
 
 ci_make_app(
-        APP_NAME        Ideal-Gas-Sim-test
+        APP_NAME        Pool-Game-Sim-test
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         tests/test_main.cc ${SOURCE_FILES} ${TEST_FILES}
         INCLUDES        include
