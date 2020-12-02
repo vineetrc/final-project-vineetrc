@@ -29,6 +29,11 @@ TEST_CASE("Board Tests") {
     REQUIRE(game_board_.GetGameBalls().size() == 0); // check if ball is removed due to being in a pocket
     REQUIRE(game_board_.GetPocketedBalls().size() == 1); //ball is added to pocket
   }
+
+  SECTION("Test Cue Ball Placement"){
+    REQUIRE(game_board_.AddCueBall(glm::vec2(0,0)) == false); // adding a cue ball outside of game board bounds
+    REQUIRE(game_board_.AddCueBall(glm::vec2(300,300)) == true); // adding a cue ball inside game board bounds
+  }
 }
 
 
