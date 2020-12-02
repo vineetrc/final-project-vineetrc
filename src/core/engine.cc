@@ -15,7 +15,7 @@ namespace pool{
     cue_ball_sunk_ = false;
   }
 
-  void Engine::Update(visualizer::Board &game_board){
+  void Engine::Update(visualizer::Board& game_board){
     if(game_board.GetTurnStatus()==true && has_changed_ == false){
       if(red_ball_player_ == 0){
       // check to see if ball coloring can be assigned
@@ -46,7 +46,7 @@ namespace pool{
     }
   }
 
-void Engine::CalculatePlayerBalls(visualizer::Board &game_board) {
+void Engine::CalculatePlayerBalls(visualizer::Board& game_board) {
   // assigns the player what ball they will have for the rest of the game, based on first sunk ball
   size_t red_count = 0;
   size_t blue_count = 0;
@@ -134,7 +134,7 @@ void Engine::AddCueBall() {
   cue_ball_sunk_ = false;
 }
 
-void Engine::UpdateScores(std::vector<size_t> &counts) {
+void Engine::UpdateScores(std::vector<size_t>& counts) {
   if(red_ball_player_ == 1) {
     // player one has control of red balls
     player_one_score_ += counts[0]; // adding red balls to player one
@@ -147,7 +147,7 @@ void Engine::UpdateScores(std::vector<size_t> &counts) {
   }
 }
 
-void Engine::CheckForWinner(std::vector<size_t> &counts) {
+void Engine::CheckForWinner(std::vector<size_t>& counts) {
   // determines if player one wins due to pocketing 8 ball
   if(is_player_one_turn_){
     if(counts[3] == 1){
@@ -175,7 +175,7 @@ void Engine::CheckForWinner(std::vector<size_t> &counts) {
   }
 }
 
-void Engine::CheckForExtraTurn(std::vector<size_t> &counts) {
+void Engine::CheckForExtraTurn(std::vector<size_t>& counts) {
   if(cue_ball_sunk_ == false) {
     //if no cue ball foul has occured, the player's turn may stay the same may be switched
     if (is_player_one_turn_) {
@@ -194,7 +194,7 @@ void Engine::CheckForExtraTurn(std::vector<size_t> &counts) {
   }
 }
 
-std::vector<size_t> Engine::CountBallTypes(visualizer::Board &game_board) {
+std::vector<size_t> Engine::CountBallTypes(visualizer::Board& game_board) {
   size_t red_count = 0;
   size_t blue_count = 0;
   size_t cue_count = 0;

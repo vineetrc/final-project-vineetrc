@@ -118,7 +118,7 @@ void Board::ClearPocketedBalls() {
   pocketed_balls_.clear();
 }
 
-void Board::SetPocketedBalls(std::vector<Ball> &pocketed_balls) {
+void Board::SetPocketedBalls(std::vector<Ball>& pocketed_balls) {
   pocketed_balls_ = pocketed_balls;
 }
 void Board::Update() {

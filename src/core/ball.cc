@@ -1,7 +1,7 @@
 #include <core/ball.h>
 namespace pool {
 
-Ball::Ball(const glm::vec2 &init_position, size_t radius, ci::Color color, Type type) {
+Ball::Ball(const glm::vec2& init_position, size_t radius, ci::Color color, Type type) {
   position_ = init_position;
   velocity_ = glm::vec2(0, 0);
   radius_ = radius;
@@ -9,8 +9,8 @@ Ball::Ball(const glm::vec2 &init_position, size_t radius, ci::Color color, Type 
   type_ = type;
 }
 
-void Ball::UpdateVelocitiesAfterCollision(const glm::vec2 &x_diff_this, const glm::vec2 &x_diff_other,
-                                          double dot_product_this, double dot_product_other, Ball &other) {
+void Ball::UpdateVelocitiesAfterCollision(const glm::vec2& x_diff_this, const glm::vec2& x_diff_other,
+                                          double dot_product_this, double dot_product_other, Ball& other) {
   //changes velocity of 'this' particle
   velocity_ = velocity_ - ((float) (dot_product_this) /
       (glm::length(x_diff_this) * glm::length(x_diff_this))) * x_diff_this;
@@ -20,7 +20,7 @@ void Ball::UpdateVelocitiesAfterCollision(const glm::vec2 &x_diff_this, const gl
       (glm::length(x_diff_other) * glm::length(x_diff_other))) * x_diff_other;
 }
 
-void Ball::HandleParticleCollision(Ball &other) {
+void Ball::HandleParticleCollision(Ball& other) {
   glm::vec2 x_diff_this = position_ - other.position_;
   glm::vec2 v_diff_this = velocity_ - other.velocity_;
 
@@ -36,7 +36,7 @@ void Ball::HandleParticleCollision(Ball &other) {
   }
 }
 
-void Ball::HandleBoundaryCollision(const glm::vec2 &top_left, const glm::vec2 &bottom_right) {
+void Ball::HandleBoundaryCollision(const glm::vec2& top_left, const glm::vec2& bottom_right) {
   if (this->radius_ > std::abs(this->position_.x - top_left.x) && velocity_.x < 0) {
     //handles left boundary collision
     velocity_.x *= -1;
@@ -107,7 +107,7 @@ ci::Color Ball::GetColor() const {
 size_t Ball::GetRadius() const {
   return radius_;
 }
-void Ball::SetVelocity(const glm::vec2 &v_coords) {
+void Ball::SetVelocity(const glm::vec2& v_coords) {
   velocity_ = v_coords;
 }
 

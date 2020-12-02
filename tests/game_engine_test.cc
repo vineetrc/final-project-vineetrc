@@ -57,6 +57,7 @@ TEST_CASE("Game Engine Tests") {
       game_engine.Update(game_board_); // update board state
       REQUIRE(game_engine.GetRedBallPlayer() == 2); // default in case of 'tie' player two ball color is red
     }
+
     SECTION("Uneven number of Colors Pocketed") {
       pool::Engine game_engine;
       REQUIRE(game_engine.GetPlayerOneTurn() == false); // currently player 2 turn
@@ -116,6 +117,7 @@ TEST_CASE("Game Engine Tests") {
         game_engine.CheckForExtraTurn(ball_counts);
         REQUIRE(game_engine.GetPlayerOneTurn() == true); // remains player one turn
       }
+
       SECTION("Test Turn Switching On a Pocket of the opponent's color") {
         game_board_.SetTurnStatus(true);
         game_engine.SetHasChanged(false);

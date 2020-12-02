@@ -42,7 +42,7 @@ class Engine {
   /**
    * determines which ball color corresponds to each player based on first sunk ball
    */
-  void CalculatePlayerBalls(visualizer::Board &game_board);
+  void CalculatePlayerBalls(visualizer::Board& game_board);
 
   /**
    * Updates the scores of each player based on the pocketed balls
@@ -82,7 +82,7 @@ class Engine {
   /**
    * counts all the different types of pocketed balls in a run
    */
-  std::vector<size_t> CountBallTypes(visualizer::Board &game_board);
+  std::vector<size_t> CountBallTypes(visualizer::Board& game_board);
 
 
 };
