@@ -16,7 +16,6 @@ namespace pool{
   }
 
   void Engine::Update(visualizer::Board &game_board){
-
     if(game_board.GetTurnStatus()==true && has_changed_ == false){
       if(red_ball_player_ == 0){
       // check to see if ball coloring can be assigned

@@ -21,7 +21,6 @@ void Ball::UpdateVelocitiesAfterCollision(const glm::vec2 &x_diff_this, const gl
 }
 
 void Ball::HandleParticleCollision(Ball &other) {
-
   glm::vec2 x_diff_this = position_ - other.position_;
   glm::vec2 v_diff_this = velocity_ - other.velocity_;
 
@@ -85,7 +84,6 @@ void Ball::AddFriction(double stop_point, double force) {
   }
 }
 
-
 glm::vec2 Ball::GetPosition() const {
   return position_;
 }
@@ -117,5 +115,4 @@ bool Ball::HasStopped() {
   //checks when all the ball have stopped moving
   return glm::vec2(0, 0) == velocity_;
 }
-
 } //namespace pool
