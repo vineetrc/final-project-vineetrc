@@ -29,11 +29,14 @@ class PoolApp : public ci::app::App {
 
  private:
   Board game_board_;
-  glm::vec2 init_coords_;
-  glm::vec2 end_coords_;
+  glm::vec2 init_coords_; // starting coords of the drag action
+  glm::vec2 end_coords_; // ending coords of the drag action
   double force_;
   size_t update_speed_;
   Engine game_engine_;
+  const double max_force_ = 20.0; // max force given to a mouse drag
+
+  void CalculateForce(); // Calculates force applied to ball based on mouse movement
 };
 }  // namespace visualizer
 }  // namespace pool
