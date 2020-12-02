@@ -214,7 +214,7 @@ std::vector<size_t> Engine::CountBallTypes(visualizer::Board &game_board) {
       eight_ball_count ++;
     }
   }
-  return {red_count,blue_count,cue_count,eight_ball_count};
+  return {red_count, blue_count, cue_count, eight_ball_count};
   }
 }
 
