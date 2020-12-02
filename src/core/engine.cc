@@ -215,5 +215,14 @@ std::vector<size_t> Engine::CountBallTypes(visualizer::Board &game_board) {
   }
   return {red_count, blue_count, cue_count, eight_ball_count};
   }
+
+  void Engine::SetHasChanged(bool val) {
+    has_changed_ = val;
+  }
+
+  void Engine::SetPlayerScore(size_t player_one, size_t player_two) {
+    player_one_score_ = player_one;
+    player_two_score_ = player_two;
+  }
 }
 

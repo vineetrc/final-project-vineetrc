@@ -118,6 +118,9 @@ void Board::ClearPocketedBalls() {
   pocketed_balls_.clear();
 }
 
+void Board::SetPocketedBalls(std::vector<Ball> &pocketed_balls) {
+  pocketed_balls_ = pocketed_balls;
+}
 void Board::Update() {
   //handles collisions and movement updates
   for (size_t i = 0; i < game_balls_.size(); i++) {
@@ -208,5 +211,11 @@ glm::vec2 Board::CalculateHitDirection(const glm::vec2& mouse_coord) const {
 glm::vec2 Board::GetMouseCoords() const {
   return mouse_;
 }
+
+void Board::SetTurnStatus(bool val) {
+  next_turn_ = val;
+}
+
+
 }  // namespace visualizer
 }  // namespace pool

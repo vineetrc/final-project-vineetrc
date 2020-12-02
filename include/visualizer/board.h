@@ -63,6 +63,9 @@ class Board {
    */
   bool GetTurnStatus();
 
+  void SetTurnStatus(bool val); // setter used for testing purposes
+
+  void SetPocketedBalls(std::vector<Ball>& pocketed_balls);
   /**
    * getter for testing
    */
@@ -80,6 +83,8 @@ class Board {
 
   // returns true if ball was succesfully added, false if user clicked out of bounds
   bool AddCueBall(glm::vec2 mouse_coords);
+
+
 
  private:
 

@@ -10,6 +10,9 @@ class Engine {
 
   Engine();
 
+  /**
+   * Updates Player Stats and Game Progression
+   */
   void Update(visualizer::Board& game_board);
 
   bool GetPlayerOneTurn() const;
@@ -32,6 +35,30 @@ class Engine {
 
   void AddCueBall(); // changes variables to let engine know that cue ball has been placed
 
+  void SetHasChanged(bool val); // setter for testing purposes
+
+  void SetPlayerScore(size_t player_one, size_t player_two);
+
+  /**
+   * determines which ball color corresponds to each player based on first sunk ball
+   */
+  void CalculatePlayerBalls(visualizer::Board &game_board);
+
+  /**
+   * Updates the scores of each player based on the pocketed balls
+   */
+  void UpdateScores(std::vector<size_t>& counts);
+
+  /**
+   * Checks for a winning condition after each turn
+   */
+  void CheckForWinner(std::vector<size_t>& counts);
+
+  /**
+   * Determines if there is an extra turn due to the player pocketing a ball of their color already
+   */
+  void CheckForExtraTurn(std::vector<size_t>& counts);
+
  private:
 
   bool is_player_one_turn_; // true if it is player one's turn, false for player two
@@ -51,30 +78,13 @@ class Engine {
 
   bool cue_ball_sunk_; // true if the cue ball has been sunk on a turn
 
-  /**
-   * determines which ball color corresponds to each player based on first sunk ball
-   */
-  void CalculatePlayerBalls(visualizer::Board &game_board);
 
   /**
    * counts all the different types of pocketed balls in a run
    */
   std::vector<size_t> CountBallTypes(visualizer::Board &game_board);
 
-  /**
-   * Updates the scores of each player based on the pocketed balls
-   */
-  void UpdateScores(std::vector<size_t>& counts);
 
-  /**
-   * Checks for a winning condition after each turn
-   */
-  void CheckForWinner(std::vector<size_t>& counts);
-
-  /**
-   * Determines if there is an extra turn due to the player pocketing a ball of their color already
-   */
-  void CheckForExtraTurn(std::vector<size_t>& counts);
 };
 }
 
