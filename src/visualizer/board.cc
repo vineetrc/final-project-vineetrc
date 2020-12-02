@@ -78,18 +78,6 @@ void Board::Draw() const {
   ci::Rectf box(tl, br);
   ci::gl::drawSolidRoundedRect(box, 20);
 
-//  ci::gl::color(ci::Color("purple"));
-//  ci::Rectf test(100,100,150,150);
-//  ci::gl::drawSolidRoundedRect(test, 20);
-//
-//  ci::gl::pushModelMatrix();
-//  ci::gl::translate(100,125);
-//  ci::gl::rotate(M_PI_4);
-//  ci::gl::color(ci::Color("orange"));
-//  test.set(0,-25,50,25);
-//  ci::gl::drawSolidRect(test);
-//  ci::gl::popModelMatrix();
-
   //draw green background
   ci::Rectf pixel_bounding_box(top_left_corner_, bottom_right_corner_);
   ci::gl::color(ci::Color("green"));
@@ -106,7 +94,7 @@ void Board::Draw() const {
   //implemented drawing of cue
   ci::gl::color(ci::Color("white"));
   vec2 hit_dr = CalculateHitDirection(mouse_);
-  if(next_turn_ == true) {
+  if(next_turn_ == true && game_balls_.size() > 0 && game_balls_.at(0).GetType() == Type::Cue) {
     ci::gl::lineWidth(5.0);
     ci::gl::drawLine(game_balls_.at(0).GetPosition(), game_balls_.at(0).GetPosition() + hit_dr * 100.0f);
   }
@@ -172,10 +160,10 @@ bool Board::CheckIfPocketed(Ball &ball) {
   //if ball is pocketed add it to the pockets_ vector
   for(size_t i = 0; i< pockets_.size(); i++){
     if(glm::length(ball.GetPosition()-pockets_.at(i))<30){
-      if(ball.GetType()!=Type::Cue){
+      //if(ball.GetType()!=Type::Cue){
         //only pocket if ball is cue ball
         return true;
-      }
+      //}
     }
   }
   return false;
@@ -197,21 +185,33 @@ std::vector<Ball> Board::GetPocketedBalls() {
   return pocketed_balls_;
 }
 
-
 void Board::AddBall(Ball ball) {
   game_balls_.push_back(ball);
 }
 
+bool Board::AddCueBall(glm::vec2 mouse_coords) {
+  bool inside_y_bound = mouse_coords.y > top_left_corner_.y
+      && mouse_coords.y < bottom_right_corner_.y;
+
+  bool inside_x_bound = mouse_coords.x > top_left_corner_.x
+      && mouse_coords.x < bottom_right_corner_.x;
+
+  if (inside_x_bound && inside_y_bound) {
+    game_balls_.insert(game_balls_.begin(), Ball(mouse_coords, ball_radii_[0], ci::Color("white"), Type::Cue));
+    return true;
+  }
+  return false;
+}
+
 glm::vec2 Board::CalculateHitDirection(const glm::vec2 &mouse_coord) const {
   vec2 ball = game_balls_.at(0).GetPosition(); //cue ball coordinates
-  vec2 hit_dr =  (mouse_coord - ball )/(-1*glm::length(mouse_coord - ball));
+  vec2 hit_dr = (mouse_coord - ball )/(-1*glm::length(mouse_coord - ball));
   return hit_dr;
 }
 
 glm::vec2 Board::GetMouseCoords() const {
   return mouse_;
 }
-
 
 }  // namespace visualizer
 }  // namespace pool

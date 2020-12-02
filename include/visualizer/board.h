@@ -77,6 +77,9 @@ class Board {
   glm::vec2 GetMouseCoords() const;
 
   void ClearPocketedBalls();
+
+  bool AddCueBall(glm::vec2 mouse_coords);
+
  private:
 
   glm::vec2 top_left_corner_; // top left corner of the simulation-box
