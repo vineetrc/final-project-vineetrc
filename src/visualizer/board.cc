@@ -108,7 +108,6 @@ void Board::Draw() const {
 
 void Board::HandleClick(const vec2 &clicked_screen_coords, float force) {
   //conditionals to check if clicked location is within simulator boundary
-  //mouse_ = clicked_screen_coords;
   HandleCueBallHit(game_balls_.at(0), clicked_screen_coords, force);
 }
 
@@ -160,10 +159,7 @@ bool Board::CheckIfPocketed(Ball &ball) {
   //if ball is pocketed add it to the pockets_ vector
   for(size_t i = 0; i< pockets_.size(); i++){
     if(glm::length(ball.GetPosition()-pockets_.at(i))<30){
-      //if(ball.GetType()!=Type::Cue){
-        //only pocket if ball is cue ball
         return true;
-      //}
     }
   }
   return false;
@@ -197,7 +193,8 @@ bool Board::AddCueBall(glm::vec2 mouse_coords) {
       && mouse_coords.x < bottom_right_corner_.x;
 
   if (inside_x_bound && inside_y_bound) {
-    game_balls_.insert(game_balls_.begin(), Ball(mouse_coords, ball_radii_[0], ci::Color("white"), Type::Cue));
+    game_balls_.insert(game_balls_.begin(), Ball(mouse_coords, ball_radii_[0],
+                                                 ci::Color("white"), Type::Cue));
     return true;
   }
   return false;
@@ -212,6 +209,5 @@ glm::vec2 Board::CalculateHitDirection(const glm::vec2 &mouse_coord) const {
 glm::vec2 Board::GetMouseCoords() const {
   return mouse_;
 }
-
 }  // namespace visualizer
 }  // namespace pool

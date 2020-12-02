@@ -60,14 +60,16 @@ void PoolApp::draw() {
   //displaying balls remaining for player one
   ci::gl::color(ci::Color("black"));
   for(int i = 0; i < 8 - game_engine_.GetPlayerOneScore(); i++){
-    ci::gl::drawSolidCircle(glm::vec2(getWindowWidth()*.065, getWindowHeight()*.3 + 20 + i*40), 20);
+    ci::gl::drawSolidCircle(glm::vec2(getWindowWidth()*.065,
+                                      getWindowHeight()*.3 + 20 + i*40), 20);
     ci::gl::color(game_engine_.GetPlayerOneColor());
   }
 
   // displaying balls remaining for player two
   ci::gl::color(ci::Color("black"));
   for(int i = 0; i < 8 - game_engine_.GetPlayerTwoScore(); i++){
-    ci::gl::drawSolidCircle(glm::vec2(getWindowWidth()*.935, getWindowHeight()*.3 + 20 + i*40), 20);
+    ci::gl::drawSolidCircle(glm::vec2(getWindowWidth()*.935,
+                                      getWindowHeight()*.3 + 20 + i*40), 20);
     ci::gl::color(game_engine_.GetPlayerTwoColor());
   }
 
@@ -162,8 +164,5 @@ void PoolApp::CalculateForce() {
     force_ = max_force_; // max power for a possible hit
   }
 }
-
-
-
 }  // namespace visualizer
 }  // namespace pool

@@ -39,8 +39,6 @@ class Engine {
   // update variable to make sure game engine calculates the new situation at the begining of each players turn
   bool has_changed_;
 
-  bool player_two_turn_;
-
   int player_one_score_; // starts at 0 and goes till 8 represents every ball pocketed
 
   int player_two_score_; // starts at 0 and goes till 8 represents every ball pocketed
@@ -51,21 +49,32 @@ class Engine {
 
   int winner_; // returns 1 or 2 depending on which player won, 0 if there is no winner
 
-  bool cue_ball_sunk; // true if the cue ball has been sunk on a turn
+  bool cue_ball_sunk_; // true if the cue ball has been sunk on a turn
 
-  // determines which ball color corresponds to each player based on first sunk ball
+  /**
+   * determines which ball color corresponds to each player based on first sunk ball
+   */
   void CalculatePlayerBalls(visualizer::Board &game_board);
 
-  // counts all the different types of pocketed balls in a run
+  /**
+   * counts all the different types of pocketed balls in a run
+   */
   std::vector<size_t> CountBallTypes(visualizer::Board &game_board);
 
+  /**
+   * Updates the scores of each player based on the pocketed balls
+   */
   void UpdateScores(std::vector<size_t>& counts);
 
+  /**
+   * Checks for a winning condition after each turn
+   */
   void CheckForWinner(std::vector<size_t>& counts);
 
+  /**
+   * Determines if there is an extra turn due to the player pocketing a ball of their color already
+   */
   void CheckForExtraTurn(std::vector<size_t>& counts);
-
 };
-
 }
 

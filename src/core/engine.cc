@@ -5,15 +5,14 @@ namespace pool{
   Engine::Engine() {
     player_one_score_ = 0;
     player_two_score_ = 0;
-
     is_player_one_turn_ = false;
-    player_two_turn_ = false;
 
     red_ball_player_ = 0;
     blue_ball_player_ = 0;
+
     has_changed_ = false;
     winner_ = 0; // corresponds to no winner
-    cue_ball_sunk = false;
+    cue_ball_sunk_ = false;
   }
 
   void Engine::Update(visualizer::Board &game_board){
@@ -31,14 +30,13 @@ namespace pool{
 
     if(counts[2] == 1){
         // cue ball has been sunk
-        cue_ball_sunk = true;
+        cue_ball_sunk_ = true;
     }
 
     CheckForExtraTurn(counts);
 
     is_player_one_turn_ = !is_player_one_turn_; // flip player turn
     has_changed_ = true;
-
 
     game_board.ClearPocketedBalls(); // clear out all the balls after updating player states
     }
@@ -130,11 +128,11 @@ int Engine::GetWinCondition() const {
 }
 
 bool Engine::HasCueBallSunk() const {
-    return cue_ball_sunk;
+    return cue_ball_sunk_;
 }
 
 void Engine::AddCueBall() {
-    cue_ball_sunk = false;
+  cue_ball_sunk_ = false;
 }
 
 void Engine::UpdateScores(std::vector<size_t> &counts) {
@@ -179,7 +177,7 @@ void Engine::CheckForWinner(std::vector<size_t> &counts) {
 }
 
 void Engine::CheckForExtraTurn(std::vector<size_t> &counts) {
-  if(cue_ball_sunk == false) {
+  if(cue_ball_sunk_ == false) {
     //if no cue ball foul has occured, the player's turn may stay the same may be switched
     if (is_player_one_turn_) {
       // checking to see if a ball of the same color has been pocketed, then dont switch player 1 turn
@@ -195,9 +193,7 @@ void Engine::CheckForExtraTurn(std::vector<size_t> &counts) {
       }
     }
   }
-
 }
-
 
 std::vector<size_t> Engine::CountBallTypes(visualizer::Board &game_board) {
   size_t red_count = 0;

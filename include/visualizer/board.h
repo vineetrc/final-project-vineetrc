@@ -78,6 +78,7 @@ class Board {
 
   void ClearPocketedBalls();
 
+  // returns true if ball was succesfully added, false if user clicked out of bounds
   bool AddCueBall(glm::vec2 mouse_coords);
 
  private:

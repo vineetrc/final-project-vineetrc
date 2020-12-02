@@ -4,7 +4,6 @@
 #endif //NAIVE_BAYES_PARTICLE_H
 #include "cinder/gl/gl.h"
 #include <cmath>
-
 //#include <Box2D/Box2D.h>
 //#include <cairo/Cairo.h>
 
@@ -73,6 +72,5 @@ class Ball {
                                       double dot_product_this, double dot_product_other, Ball& other);
 
   void AddFriction(double stop_point, double force);
-
 };
 }//namespace pool
