@@ -142,13 +142,14 @@ void Board::Update() {
   next_turn_ = true;
   for (size_t i = 0; i < game_balls_.size(); i++) {
     if (game_balls_.at(i).HasStopped() == false) {
+      // if balls are still moving, next turn hasn't started
       next_turn_ = false;
     }
   }
 }
 
 void Board::HandleCueBallHit(Ball& cue, const glm::vec2& mouse_coords, float force) {
-  if (next_turn_ == true) {
+  if (next_turn_) {
     cue.SetVelocity(force * (mouse_coords - cue.GetPosition()) / glm::length(mouse_coords - cue.GetPosition()));
   }
 }
@@ -175,7 +176,7 @@ bool Board::GetTurnStatus() {
   return next_turn_;
 }
 
-std::vector<Ball> Board::GetGameBalls() {
+std::vector<Ball>& Board::GetGameBalls() {
   return game_balls_;
 }
 
@@ -195,6 +196,7 @@ bool Board::AddCueBall(glm::vec2 mouse_coords) {
       && mouse_coords.x < bottom_right_corner_.x;
 
   if (inside_x_bound && inside_y_bound) {
+    // insert cue ball if the mouse coords are within the board
     game_balls_.insert(game_balls_.begin(), Ball(mouse_coords, ball_radii_[0],
                                                  ci::Color("white"), Type::Cue));
     return true;
@@ -205,7 +207,7 @@ bool Board::AddCueBall(glm::vec2 mouse_coords) {
 glm::vec2 Board::CalculateHitDirection(const glm::vec2& mouse_coord) const {
   vec2 ball = game_balls_.at(0).GetPosition(); //cue ball coordinates
   vec2 hit_dr = (mouse_coord - ball) / (-1 * glm::length(mouse_coord - ball));
-  return hit_dr;
+  return hit_dr; // returning a unit vector in the direction of the user's mouse
 }
 
 glm::vec2 Board::GetMouseCoords() const {
@@ -215,7 +217,5 @@ glm::vec2 Board::GetMouseCoords() const {
 void Board::SetTurnStatus(bool val) {
   next_turn_ = val;
 }
-
-
 }  // namespace visualizer
 }  // namespace pool

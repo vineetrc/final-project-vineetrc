@@ -4,7 +4,6 @@
 #include <cmath>
 
 namespace pool {
-
 namespace visualizer {
 
  // constants for the 3 different types of particles
@@ -15,7 +14,6 @@ namespace visualizer {
  * A Board that represents the environment in which the gas particles interact
  */
 class Board {
-
  public:
 
   /**
@@ -32,7 +30,7 @@ class Board {
   void Draw() const;
 
   /**
-   * Adds particle at clicked coordinates if is within simulation boundary
+   * Called when player clicks to shoot cue ball
    */
   void HandleClick(const glm::vec2& clicked_screen_coords, float force);
 
@@ -46,16 +44,24 @@ class Board {
    */
   void Update();
 
-
   /**
    * Getter method that returns particles in simulation. Used for Testing
    */
   std::vector<Ball> GetParticles() const;
 
+  /**
+   * Helper method that gives cueball a certain velocity to create the 'hit'
+   */
   void HandleCueBallHit(Ball& cue, const glm::vec2& mouse_coords, float force);
 
+  /**
+   * Returns true if the ball falls in a pocket
+   */
   bool CheckIfPocketed(Ball& ball);
 
+  /**
+   * Updates User mouse position
+   */
   void UpdateMousePosition(const glm::vec2& mouse_coords);
 
   /**
@@ -66,28 +72,31 @@ class Board {
   void SetTurnStatus(bool val); // setter used for testing purposes
 
   void SetPocketedBalls(std::vector<Ball>& pocketed_balls);
-  /**
-   * getter for testing
-   */
-  std::vector<Ball> GetGameBalls();
+
+  std::vector<Ball>& GetGameBalls();
 
   std::vector<Ball> GetPocketedBalls();
 
+  /**
+   * Added Ball for testing purposes
+   */
   void AddBall(Ball ball);
 
+  /**
+   * Returns unit vector in direction where user wants cue ball to be hit
+   */
   glm::vec2 CalculateHitDirection(const glm::vec2& mouse_coord) const;
 
   glm::vec2 GetMouseCoords() const;
 
   void ClearPocketedBalls();
 
-  // returns true if ball was succesfully added, false if user clicked out of bounds
+  /**
+   *  returns true if cue ball was successfully added, false if user clicked out of bounds
+   */
   bool AddCueBall(glm::vec2 mouse_coords);
 
-
-
  private:
-
   glm::vec2 top_left_corner_; // top left corner of the simulation-box
 
   glm::vec2 bottom_right_corner_; // bottom right corner of simulation-box
@@ -100,9 +109,9 @@ class Board {
 
   std::vector<Ball> pocketed_balls_; //balls that fell into the pocket every turn
 
-  glm::vec2 mouse_; // coordinates of the current state of the mouse
+  glm::vec2 mouse_; // coordinates of the current state of the user's mouse
 
-  std::vector<glm::vec2> pockets_;
+  std::vector<glm::vec2> pockets_; // stores coordinates of pockets on board
 
   bool next_turn_; // represents if player can hit a ball to start a new 'play'
 
