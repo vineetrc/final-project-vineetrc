@@ -268,3 +268,25 @@ TEST_CASE("Ball Friction"){
     REQUIRE(ball1.GetPosition().y == Approx(37.0).margin(1e-3));
   }
 }
+TEST_CASE("Testing Ball First Collision"){
+  SECTION("Testing Cue Ball First Hit Detection with Collision") {
+    pool::Ball cue_ball(vec2(20, 20), 5, def_color, pool::Type::Cue);
+    pool::Ball blue_ball(vec2(23, 23), 5, def_color, pool::Type::Blue);
+    pool::Ball red_ball(vec2(19, 19), 5, def_color, pool::Type::Red);
+    cue_ball.SetVelocity(glm::vec2(1, 1));
+    cue_ball.HandleParticleCollision(blue_ball);
+    cue_ball.HandleParticleCollision(red_ball);
+    REQUIRE(cue_ball.GetFirstBallCollision() == pool::Type::Blue); // only registers first hit with blue_ball
+  }
+
+  SECTION("Testing Cue Ball First Hit Detection with no Collision") {
+    pool::Ball cue_ball(vec2(20, 20), 1, def_color, pool::Type::Cue);
+    pool::Ball blue_ball(vec2(23, 23), 1, def_color, pool::Type::Blue);
+    pool::Ball red_ball(vec2(19, 19), 1, def_color, pool::Type::Red);
+    cue_ball.SetVelocity(glm::vec2(1, 1));
+    cue_ball.HandleParticleCollision(blue_ball);
+    cue_ball.HandleParticleCollision(red_ball);
+    REQUIRE(cue_ball.GetFirstBallCollision() == pool::Type::None); // registers no hit due to no collision
+  }
+}
+
