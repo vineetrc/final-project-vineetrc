@@ -1,7 +1,7 @@
 #pragma once
-#ifndef NAIVE_BAYES_INCLUDE_CORE_ENGINE_H_
-#define NAIVE_BAYES_INCLUDE_CORE_ENGINE_H_
-#endif //NAIVE_BAYES_INCLUDE_CORE_ENGINE_H_
+//#ifndef NAIVE_BAYES_INCLUDE_CORE_ENGINE_H_
+//#define NAIVE_BAYES_INCLUDE_CORE_ENGINE_H_
+//#endif //NAIVE_BAYES_INCLUDE_CORE_ENGINE_H_
 #include "visualizer/board.h"
 
 namespace pool {
@@ -19,7 +19,7 @@ class Engine {
 
   int GetRedBallPlayer() const;
 
-  int GetBlueBallPlayer() const;
+  void SetRedBallPlayer(int player_num);
 
   int GetPlayerOneScore() const;
 
@@ -32,6 +32,8 @@ class Engine {
   int GetWinCondition() const;
 
   bool HasCueBallSunk() const; // returns true or false depending on if cue ball has been sunk
+
+  bool HasIncorrectColorHit() const;
 
   void AddCueBall(); // changes variables to let engine know that cue ball has been placed
 
@@ -59,11 +61,13 @@ class Engine {
    */
   void CheckForExtraTurn(std::vector<size_t>& counts);
 
+  std::string GetGameMessage(visualizer::Board& game_board);
+
  private:
 
   bool is_player_one_turn_; // true if it is player one's turn, false for player two
 
-  // update variable to make sure game engine calculates the new situation at the begining of each players turn
+  // update variable to make sure game engine calculates the new game situation only at the start of each players new turn
   bool has_changed_;
 
   int player_one_score_; // starts at 0 and goes till 8 represents every ball pocketed
@@ -72,19 +76,18 @@ class Engine {
 
   int red_ball_player_; // represents what player (1 or 2) the red ball color is assigned to, 0 if unassigned
 
-  int blue_ball_player_; // represents what player (1 or 2) the blue ball color is assigned to, 0 if unassigned
-
   int winner_; // returns 1 or 2 depending on which player won, 0 if there is no winner
 
   bool cue_ball_sunk_; // true if the cue ball has been sunk on a turn
 
+  bool hit_same_color_ball_; // true if player cue hit wrong ball color first
+
+  bool first_turn_;
 
   /**
    * counts all the different types of pocketed balls in a run
    */
   std::vector<size_t> CountBallTypes(visualizer::Board& game_board);
-
-
 };
 }
 
