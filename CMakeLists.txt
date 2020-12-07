@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 set(CMAKE_CXX_STANDARD 11)
-project(naive-bayes)
-
+project(pool-app)
+#naive-bayes
 # This tells the compiler to not aggressively optimize and
 # to include debugging information so that the debugger
 # can properly read what's going on.
