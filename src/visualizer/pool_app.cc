@@ -10,86 +10,64 @@ PoolApp::PoolApp()
 
   ci::app::setWindowSize(1400, 800);
   update_speed_ = 1; //number of simulation 'steps' gone thru on one update call
+  isStartScreen = true;
 }
 
 void PoolApp::draw() {
   ci::Color8u background_color(255, 246, 148);  // light yellow
   ci::gl::clear(background_color);
 
-  std::string player_turn = "player 1";
-  if(game_engine_.GetPlayerOneTurn()==false){
-    player_turn = "player 2";
+
+  if(!isStartScreen) {
+    std::string player_turn = "Player 1";
+    if (game_engine_.GetPlayerOneTurn() == false) {
+      player_turn = "Player 2";
+    }
+
+//  std::string game_message = "Play in progress";
+//  if(game_board_.GetTurnStatus()==true){
+//    game_message = "hit the cue ball";
+//  }
+//
+//  if(game_engine_.HasIncorrectColorHit()==true) {
+//    game_message = "Foul. Previous Player Didn't Hit Their Own Ball Color. Current Player hit the cue ball";
+//  }
+//  if(game_engine_.HasCueBallSunk()==true) {
+//    game_message = "click to place the cue ball";
+//  }
+//
+//  if(game_engine_.GetWinCondition()== 1){
+//    game_message = "player one Wins";
+//  }
+//
+//  if(game_engine_.GetWinCondition()== 2){
+//    game_message = "player two Wins";
+//  }
+
+
+    // displays message of Winning condition, Player turn, or to place the cue ball due to a foul
+    ci::gl::drawStringCentered(game_engine_.GetGameMessage(game_board_),
+                               glm::vec2(getWindowWidth() * .5, 50),
+                               ci::Color("black"));
+
+    // displays which player turn it is
+
+    if (game_engine_.GetWinCondition() == 0) {
+      ci::gl::drawStringCentered(player_turn + " turn", glm::vec2(getWindowWidth() * .5, 80), ci::Color("black"));
+    }
+
+    // drawing signs for the player ball racks
+    ci::gl::drawStringCentered("player 1", glm::vec2(getWindowWidth() * .075, 120), ci::Color("black"));
+    ci::gl::drawStringCentered("player 2", glm::vec2(getWindowWidth() * .925, 120), ci::Color("black"));
+
+    DrawGameExternalities();  // draws player ball racks and power bar
+
+    // draw game_board_
+    game_board_.Draw();
   }
-
-  std::string game_message = "Play in progress";
-  if(game_board_.GetTurnStatus()==true){
-    game_message = "hit the cue ball";
+  else{
+    DrawStartScreen();
   }
-  if(game_engine_.HasCueBallSunk()==true) {
-    game_message = "click to place the cue ball";
-  }
-
-  if(game_engine_.GetWinCondition()== 1){
-    game_message = "player one Wins";
-  }
-
-  if(game_engine_.GetWinCondition()== 2){
-    game_message = "player two Wins";
-  }
-
-  // drawing signs for the player ball racks
-  ci::gl::drawStringCentered("player 1",glm::vec2(getWindowWidth()*.075,90),ci::Color("black"));
-  ci::gl::drawStringCentered( "player 2",glm::vec2(getWindowWidth()*.925,90),ci::Color("black"));
-
-  // displays message of Winning condition, Player turn, or to place the cue ball due to a foul
-  ci::gl::drawStringCentered(game_message,glm::vec2(getWindowWidth()*.5,50),ci::Color("black"));
-
-  // displays which player turn it is
-  ci::gl::drawStringCentered(player_turn,glm::vec2(getWindowWidth()*.5,80),ci::Color("black"));
-
-  // drawing ball racks for players
-  ci::gl::color(ci::Color("grey"));
-  ci::Rectf player_one_rack(getWindowWidth()*.05, getWindowHeight()*.3, getWindowWidth()*.08,
-                            getWindowHeight()*.7 );
-  ci::gl::drawSolidRoundedRect(player_one_rack, 20);
-
-  ci::Rectf player_two_rack(getWindowWidth()*.92, getWindowHeight()*.3, getWindowWidth()*.95,
-                            getWindowHeight()*.7 );
-  ci::gl::drawSolidRoundedRect(player_two_rack, 20);
-
-  //displaying balls remaining for player one
-  ci::gl::color(ci::Color("black"));
-  for(int i = 0; i < 8 - game_engine_.GetPlayerOneScore(); i++){
-    ci::gl::drawSolidCircle(glm::vec2(getWindowWidth()*.065,
-                                      getWindowHeight()*.3 + 20 + i*40), 20);
-    ci::gl::color(game_engine_.GetPlayerOneColor());
-  }
-
-  // displaying balls remaining for player two
-  ci::gl::color(ci::Color("black"));
-  for(int i = 0; i < 8 - game_engine_.GetPlayerTwoScore(); i++){
-    ci::gl::drawSolidCircle(glm::vec2(getWindowWidth()*.935,
-                                      getWindowHeight()*.3 + 20 + i*40), 20);
-    ci::gl::color(game_engine_.GetPlayerTwoColor());
-  }
-
-  //drawing shot meter
-  ci::gl::color(ci::Color("grey"));
-  glm::vec2 top_left = ci::vec2(getWindowWidth()*.5-120,getWindowHeight()*.85);
-  glm::vec2 bottom_right = ci::vec2(getWindowWidth()*.5+120,getWindowHeight()*.85+50);
-  ci::Rectf full_power_bar(top_left, bottom_right);
-  ci::gl::drawSolidRoundedRect(full_power_bar, 20);
-
-  ci::gl::color(ci::Color("red"));
-  bottom_right.x = getWindowWidth()*.5 - 120 + 240*(force_/max_force_);
-  ci::Rectf power_bar(top_left,bottom_right);
-  ci::gl::drawSolidRoundedRect(power_bar, 20);
-  ci::gl::drawStringCentered(
-      std::to_string((force_/max_force_)*100).substr(0,4)+"%",
-      glm::vec2(getWindowWidth()*.5,getWindowHeight()*.85+25),ci::Color("black"));
-
-  // draw game_board_
-  game_board_.Draw();
 }
 void PoolApp::mouseDrag(ci::app::MouseEvent event) {
   end_coords_ = event.getPos();
@@ -138,6 +116,10 @@ void PoolApp::mouseMove(ci::app::MouseEvent event) {
 
 void PoolApp::keyDown(ci::app::KeyEvent event) {
   switch (event.getCode()) {
+    case ci::app::KeyEvent::KEY_SPACE: {
+      isStartScreen = false;
+      break;
+    }
     case ci::app::KeyEvent::KEY_DELETE: {
       game_board_.Clear();
       break;
@@ -163,6 +145,90 @@ void PoolApp::CalculateForce() {
   if (force_ > max_force_) {
     force_ = max_force_; // max power for a possible hit
   }
+}
+
+void PoolApp::DrawStartScreen() {
+  double const logo_width = 400;
+  double const logo_y_pos = getWindowHeight()*.15;
+  double const line_spacing = 20;
+
+  auto img = loadImage( loadAsset( "../assets/PoolHome.jpg" ) );
+  ci::gl::TextureRef mTexture;
+  mTexture = ci::gl::Texture2d::create( img );
+  ci::Rectf drawRect(getWindowWidth()/2 - logo_width/2, logo_y_pos,
+                     getWindowWidth()/2 + logo_width/2, logo_y_pos + logo_width/2  );
+  ci::gl::draw(mTexture, drawRect); // drawing start screen Logo
+
+  ci::gl::drawStringCentered("Press Space To Start!",
+                             glm::vec2(getWindowWidth()/2 ,getWindowHeight()*.45),
+                             ci::Color("black"),ci::Font("Impact", 40));
+  ci::gl::drawStringCentered("Rules:", glm::vec2(getWindowWidth()/2 ,getWindowHeight()*.55),
+                             ci::Color("black"), ci::Font("Times New Roman", 30));
+  ci::gl::drawStringCentered("1. First Ball Pocketed Determines Player's Ball Colors ",
+                             glm::vec2(getWindowWidth()/2 ,getWindowHeight()*.6 + line_spacing)
+                             , ci::Color("black"), ci::Font("Times New Roman", 20));
+  ci::gl::drawStringCentered("2. Win by Pocketing all your balls and the 8ball",
+                             glm::vec2(getWindowWidth()/2 ,getWindowHeight()*.6 + 2*line_spacing),
+                             ci::Color("black"), ci::Font("Times New Roman", 20));
+  ci::gl::drawStringCentered("3. Pocketing the 8ball before your other balls is an automatic loss",
+                             glm::vec2(getWindowWidth()/2 ,getWindowHeight()*.6 + 3*line_spacing),
+                             ci::Color("black"), ci::Font("Times New Roman", 20));
+  ci::gl::drawStringCentered("4. Remember to always hit your own ball color first ",
+                             glm::vec2(getWindowWidth()/2 ,getWindowHeight()*.6 + 4*line_spacing),
+                             ci::Color("black"), ci::Font("Times New Roman", 20));
+  ci::gl::drawStringCentered("5. Pocketing your color gives you a second turn ",
+                             glm::vec2(getWindowWidth()/2 ,getWindowHeight()*.6+ 5*line_spacing),
+                             ci::Color("black"), ci::Font("Times New Roman", 20));
+}
+
+void PoolApp::DrawGameExternalities() {
+  // drawing ball racks for players
+  //double const rack_x_pos = getWindowHeight()*.15;
+
+  ci::gl::color(ci::Color("grey"));
+  ci::Rectf player_one_rack(getWindowWidth()*.05, getWindowHeight()*.3, getWindowWidth()*.08,
+                            getWindowHeight()*.7 );
+  ci::gl::drawSolidRoundedRect(player_one_rack, 20);
+
+  ci::Rectf player_two_rack(getWindowWidth()*.92, getWindowHeight()*.3, getWindowWidth()*.95,
+                            getWindowHeight()*.7 );
+  ci::gl::drawSolidRoundedRect(player_two_rack, 20);
+
+  //displaying balls remaining for player one
+  ci::gl::color(ci::Color("black"));
+  for(int i = 0; i < 8 - game_engine_.GetPlayerOneScore(); i++){
+    if(game_engine_.GetWinCondition() != 1) {
+      ci::gl::drawSolidCircle(glm::vec2(getWindowWidth() * .065,
+                                        getWindowHeight() * .3 + 20 + i * 40), 20);
+      ci::gl::color(game_engine_.GetPlayerOneColor());
+    }
+  }
+
+  // displaying balls remaining for player two
+  ci::gl::color(ci::Color("black"));
+  for(int i = 0; i < 8 - game_engine_.GetPlayerTwoScore(); i++){
+    if(game_engine_.GetWinCondition() != 2) {
+      ci::gl::drawSolidCircle(glm::vec2(getWindowWidth() * .935,
+                                        getWindowHeight() * .3 + 20 + i * 40), 20);
+      ci::gl::color(game_engine_.GetPlayerTwoColor());
+    }
+  }
+
+  //drawing shot meter
+  ci::gl::color(ci::Color("grey"));
+  glm::vec2 top_left = ci::vec2(getWindowWidth()*.5-120,getWindowHeight()*.85);
+  glm::vec2 bottom_right = ci::vec2(getWindowWidth()*.5+120,getWindowHeight()*.85+50);
+  ci::Rectf full_power_bar(top_left, bottom_right);
+  ci::gl::drawSolidRoundedRect(full_power_bar, 20);
+
+  ci::gl::color(ci::Color("red"));
+  bottom_right.x = getWindowWidth()*.5 - 120 + 240*(force_/max_force_);
+  ci::Rectf power_bar(top_left,bottom_right);
+  ci::gl::drawSolidRoundedRect(power_bar, 20);
+  ci::gl::drawStringCentered(
+      std::to_string((force_/max_force_)*100).substr(0,4)+"%",
+      glm::vec2(getWindowWidth()*.5,getWindowHeight()*.85+25),ci::Color("black"));
+
 }
 }  // namespace visualizer
 }  // namespace pool

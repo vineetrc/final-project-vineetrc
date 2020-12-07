@@ -35,8 +35,13 @@ class PoolApp : public ci::app::App {
   size_t update_speed_;
   Engine game_engine_;
   const double max_force_ = 20.0; // max force given to a mouse drag
+  bool isStartScreen;
 
   void CalculateForce(); // Calculates force applied to ball based on mouse movement
+
+  void DrawGameExternalities(); // Draws the power bar and player racks
+
+  void DrawStartScreen();
 };
 }  // namespace visualizer
 }  // namespace pool
