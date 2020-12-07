@@ -1,18 +1,16 @@
 #pragma once
-#ifndef NAIVE_BAYES_PARTICLE_H
-#define NAIVE_BAYES_PARTICLE_H
-#endif //NAIVE_BAYES_PARTICLE_H
+//#ifndef NAIVE_BAYES_PARTICLE_H
+//#define NAIVE_BAYES_PARTICLE_H
+//#endif //NAIVE_BAYES_PARTICLE_H
 #include "cinder/gl/gl.h"
 #include <cmath>
-//#include <Box2D/Box2D.h>
-//#include <cairo/Cairo.h>
 
 namespace pool {
 
 /**
- * Represents ID for the 3 particle types in the simulator
+ * Represents ID for the 3 particle types in the simulator, and a None type for collission detection
  */
-enum class Type { Cue , Red , Blue , EightBall };
+enum class Type { Cue , Red , Blue , EightBall, None };
 
 class Ball {
  public:
@@ -38,6 +36,9 @@ class Ball {
    */
   void UpdatePosition(double stop_point, double force);
 
+  /**
+   * Bool representing if particle has stopped moving
+   */
   bool HasStopped();
 
   double GetSpeed() const;
@@ -52,9 +53,21 @@ class Ball {
 
   Type GetType() const;
 
-  void SetVelocity(const glm::vec2& v_coords);
- private:
+  /**
+   * Resets the first ball type to None
+   */
+  void ClearFirstBallCollision();
 
+  /**
+   * Returns the Type of the first ball, this ball object collides with
+   */
+  Type GetFirstBallCollision() const;
+
+  void SetFirstBallCollision(Type type);
+
+  void SetVelocity(const glm::vec2& v_coords);
+
+ private:
   glm::vec2 position_;
 
   glm::vec2 velocity_;
@@ -65,12 +78,17 @@ class Ball {
 
   Type type_;
 
+  Type first_ball_collision_; // Stores type of the first ball collision in a new turn
+
   /**
    * Helper method that changes velocities when a collision occurs
    */
   void UpdateVelocitiesAfterCollision(const glm::vec2& x_diff_this, const glm::vec2& x_diff_other,
                                       double dot_product_this, double dot_product_other, Ball& other);
 
+  /**
+   * Implements friction in movement, with a force representing the decreasing velocity and a stop-point velocity
+   */
   void AddFriction(double stop_point, double force);
 };
 }//namespace pool
