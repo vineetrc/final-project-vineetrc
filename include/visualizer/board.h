@@ -34,7 +34,7 @@ class Board {
   /**
    * Adds particle at clicked coordinates if is within simulation boundary
    */
-  void HandleClick(const glm::vec2& clicked_screen_coords);
+  void HandleClick(const glm::vec2& clicked_screen_coords, float force);
 
   /**
    * Clears all particles in the simulator
@@ -52,7 +52,7 @@ class Board {
    */
   std::vector<Ball> GetParticles() const;
 
-  void HandleCueBallHit(Ball& cue, const glm::vec2& mouse_coords);
+  void HandleCueBallHit(Ball& cue, const glm::vec2& mouse_coords, float force);
 
   bool CheckIfPocketed(Ball& ball);
 
@@ -63,6 +63,9 @@ class Board {
    */
   bool GetTurnStatus();
 
+  void SetTurnStatus(bool val); // setter used for testing purposes
+
+  void SetPocketedBalls(std::vector<Ball>& pocketed_balls);
   /**
    * getter for testing
    */
@@ -73,6 +76,15 @@ class Board {
   void AddBall(Ball ball);
 
   glm::vec2 CalculateHitDirection(const glm::vec2& mouse_coord) const;
+
+  glm::vec2 GetMouseCoords() const;
+
+  void ClearPocketedBalls();
+
+  // returns true if ball was succesfully added, false if user clicked out of bounds
+  bool AddCueBall(glm::vec2 mouse_coords);
+
+
 
  private:
 
@@ -96,7 +108,7 @@ class Board {
 
   const double stop_point_ = 0.1; // friction parameters
 
-  const double friction_force_ = .01; //friction parameters
+  const double friction_force_ = .0125; //friction parameters
 };
 }  // namespace visualizer
 }  // namespace pool

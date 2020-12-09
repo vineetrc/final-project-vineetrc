@@ -50,7 +50,9 @@ TEST_CASE("Boundary Collisions", "[Boundary]") {
       REQUIRE(ball.GetVelocity().x == Approx(3));
       REQUIRE(ball.GetVelocity().y == Approx(2));
     }
-  }SECTION("Top Boundary Collision Test") {
+  }
+
+  SECTION("Top Boundary Collision Test") {
     SECTION("Moving towards Boundary") {
       pool::Ball ball(vec2(5, 2), 5, def_color, type);
       ball.SetVelocity(vec2(3, -2));
