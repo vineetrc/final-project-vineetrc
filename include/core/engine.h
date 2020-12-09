@@ -1,13 +1,13 @@
 #pragma once
-//#ifndef NAIVE_BAYES_INCLUDE_CORE_ENGINE_H_
-//#define NAIVE_BAYES_INCLUDE_CORE_ENGINE_H_
-//#endif //NAIVE_BAYES_INCLUDE_CORE_ENGINE_H_
 #include "visualizer/board.h"
 
 namespace pool {
 class Engine {
  public:
 
+  /**
+   * Initializes a Game Engine that represents a Pool Game start state
+   */
   Engine();
 
   /**
@@ -15,31 +15,103 @@ class Engine {
    */
   void Update(visualizer::Board& game_board);
 
+  /**
+   * Returns true if player 1 turn, false if player 2 turn
+   */
   bool GetPlayerOneTurn() const;
 
-  int GetRedBallPlayer() const;
+  /**
+   * Returns 1 or 2 depending on which player is a red-ball player. 0, if no coloring has been assigned
+   */
+  size_t GetRedBallPlayer() const;
 
+  /**
+   * Sets player Ball coloring, for testing purposes
+   */
   void SetRedBallPlayer(int player_num);
 
-  int GetPlayerOneScore() const;
+  /**
+   * Returns player 1 score
+   */
+  size_t GetPlayerOneScore() const;
 
-  int GetPlayerTwoScore() const;
+  /**
+   * Returns player 2 score
+   */
+  size_t GetPlayerTwoScore() const;
 
+  /**
+   * Returns the color of the Player 1's ball. Returns grey if ball color is not assigned yet
+   */
   ci::Color GetPlayerOneColor() const;
 
+  /**
+   * Returns the color of the Player 2's ball. Returns grey if ball color is not assigned yet
+   */
   ci::Color GetPlayerTwoColor() const;
 
-  int GetWinCondition() const;
+  /**
+   * Returns 0 for no winner, 1 for player 1 win, 2 for player 2 win
+   */
+  size_t GetWinCondition() const;
 
-  bool HasCueBallSunk() const; // returns true or false depending on if cue ball has been sunk
+  /**
+   * Returns true if cue ball was pocketed
+   */
+  bool HasCueBallSunk() const;
 
+  /**
+   * Returns true if player didn't hit their assigned color on their turn
+   */
   bool HasIncorrectColorHit() const;
 
-  void AddCueBall(); // changes variables to let engine know that cue ball has been placed
+  /**
+   *  Lets Engine know that a cue ball has been added to the board
+   */
+  void AddCueBall();
 
-  void SetHasChanged(bool val); // setter for testing purposes
+  /**
+   * Setter to allow player turn iteration, used for testing purposes
+   */
+  void SetHasChanged(bool val);
 
+  /**
+   * Sets player's scores, for testing purposes
+   */
   void SetPlayerScore(size_t player_one, size_t player_two);
+
+  /**
+   * Returns a Game Message depending on the state of the game score and situation
+   */
+  std::string GetGameMessage(const visualizer::Board& game_board) const;
+
+  size_t GetWinningScore() const;
+
+ private:
+
+  bool is_player_one_turn_; // true if it is player one's turn, false for player two
+
+  bool has_changed_; // update variable so engine runs at start of each player turn
+
+  size_t player_one_score_; // starts at 0 and goes till 8 represents every ball pocketed
+
+  size_t player_two_score_; // starts at 0 and goes till 8 represents every ball pocketed
+
+  size_t red_ball_player_; // represents what player (1 or 2) the red ball color is assigned to, 0 if unassigned
+
+  size_t winner_; // returns 1 or 2 depending on which player won, 0 if there is no winner
+
+  bool has_cue_ball_sunk_; // true if the cue ball has been sunk on a turn
+
+  bool hit_same_color_ball_; // true if player cue hit wrong ball color first
+
+  bool is_first_turn_; // returns true if its the first turn of the game
+
+  const size_t winning_score_ = 8;
+  /**
+   * counts all the different types of pocketed balls in a run
+   */
+  std::vector<size_t> CountBallTypes(visualizer::Board& game_board) const;
 
   /**
    * determines which ball color corresponds to each player based on first sunk ball
@@ -49,45 +121,22 @@ class Engine {
   /**
    * Updates the scores of each player based on the pocketed balls
    */
-  void UpdateScores(std::vector<size_t>& counts);
+  void UpdateScores(const std::vector<size_t>& counts);
 
   /**
    * Checks for a winning condition after each turn
    */
-  void CheckForWinner(std::vector<size_t>& counts);
+  void CheckForWinner(const std::vector<size_t>& counts);
 
   /**
    * Determines if there is an extra turn due to the player pocketing a ball of their color already
    */
-  void CheckForExtraTurn(std::vector<size_t>& counts);
-
-  std::string GetGameMessage(visualizer::Board& game_board);
-
- private:
-
-  bool is_player_one_turn_; // true if it is player one's turn, false for player two
-
-  // update variable to make sure game engine calculates the new game situation only at the start of each players new turn
-  bool has_changed_;
-
-  int player_one_score_; // starts at 0 and goes till 8 represents every ball pocketed
-
-  int player_two_score_; // starts at 0 and goes till 8 represents every ball pocketed
-
-  int red_ball_player_; // represents what player (1 or 2) the red ball color is assigned to, 0 if unassigned
-
-  int winner_; // returns 1 or 2 depending on which player won, 0 if there is no winner
-
-  bool cue_ball_sunk_; // true if the cue ball has been sunk on a turn
-
-  bool hit_same_color_ball_; // true if player cue hit wrong ball color first
-
-  bool first_turn_;
+  void CheckForExtraTurn(const std::vector<size_t>& counts);
 
   /**
-   * counts all the different types of pocketed balls in a run
+   * Determines if the player hit the wrong color ball in the last turn
    */
-  std::vector<size_t> CountBallTypes(visualizer::Board& game_board);
+  void CheckIncorrectColorHit(visualizer::Board& game_board, bool balls_assigned_this_turn);
 };
 }
 
