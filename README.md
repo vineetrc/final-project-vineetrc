@@ -25,8 +25,19 @@ Objective of the Game: Sink all your own color balls and then the 8ball.
 - If prompted, click anywhere on the boar to place the cue ball in the result of the previous player sinking a cue ball
 - The Ball Racks on the sides indicate how many ball and which color balls need to still be sunk in order to win the game.
 
+# Dependencies
+
+**Windows or Mac**
+* [CMake](https://cmake.org/)
+* [Cinder (v0.9.2)](https://libcinder.org/download)
+**For windows, download [Visual Studio 2015](https://my.visualstudio.com/Downloads?q=visual%20studio%202015&wt.mc_id=o~msft~vscom~older-downloads) in order to use cinder*
+
 # How To Run Program:
-This program is a CMAKE project that uses the Cinder Libary. Download project inside your cinder-my-projects folder, build project with cmake and run.
+1) Download Cinder v0.9.2
+2) Open the ~/Cinder folder in an IDE and run it in order to build Cinder
+3) For windows, download Visual Studio to run
+4) Download repo into a new folder within the ~/Cinder folder ex. my-projects folder
+5) Build project and run cinder-app 
 
 # Images 
 
