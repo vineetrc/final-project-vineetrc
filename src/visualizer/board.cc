@@ -3,7 +3,6 @@
 using glm::vec2;
 
 namespace pool {
-
 namespace visualizer {
 
 Board::Board(const vec2& top_left_corner, double x_boundary_dim, double y_boundary_dim) {
@@ -17,48 +16,44 @@ Board::Board(const vec2& top_left_corner, double x_boundary_dim, double y_bounda
 
   //cue ball is first in the list of game balls
   glm::vec2 cueball_pos = top_left_corner_ + vec2(.25 * x_boundary_dim, .5 * y_boundary_dim);
-  game_balls_.push_back(Ball(cueball_pos, ball_radii_[0],
+  game_balls_.push_back(Ball(cueball_pos, ball_radii_,
                              ci::Color("white"), Type::Cue));
 
   // arranging triangle formation
-  glm::vec2 break_position = top_left_corner_ + vec2(.85 * x_boundary_dim,
-                                                     .50 * y_boundary_dim - 2.5 * ball_radii_[0]);
+  // starting coordinate of ball break formation, around 3/4 length of table and in the middle
+  glm::vec2 break_position = top_left_corner_ + vec2(.7 * x_boundary_dim,
+                                                     .50 * y_boundary_dim );
 
-  //1st row
-  game_balls_.push_back(Ball(break_position + vec2(0, 0), ball_radii_[0],
-                             ci::Color(game_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(break_position + vec2(0, 1 * 20), ball_radii_[0],
-                             ci::Color(game_particle_colors_[1]), Type::Blue));
-  game_balls_.push_back(Ball(break_position + vec2(0, 2 * 20), ball_radii_[0],
-                             ci::Color(game_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(break_position + vec2(0, 3 * 20), ball_radii_[0],
-                             ci::Color(game_particle_colors_[1]), Type::Blue));
-  game_balls_.push_back(Ball(break_position + vec2(0, 4 * 20), ball_radii_[0],
-                             ci::Color(game_particle_colors_[0]), Type::Red));
-  //2nd row
-  game_balls_.push_back(Ball(break_position + vec2(-20, 10), ball_radii_[0],
-                             ci::Color(game_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(break_position + vec2(-20, 10 + 1 * 20), ball_radii_[0],
-                             ci::Color(game_particle_colors_[1]), Type::Blue));
-  game_balls_.push_back(Ball(break_position + vec2(-20, 10 + 2 * 20), ball_radii_[0],
-                             ci::Color(game_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(break_position + vec2(-20, 10 + 3 * 20), ball_radii_[0],
-                             ci::Color(game_particle_colors_[1]), Type::Blue));
-  //3rd row
-  game_balls_.push_back(Ball(break_position + vec2(-40, 20 + 0 * 20), ball_radii_[0],
-                             ci::Color(game_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(break_position + vec2(-40, 20 + 1 * 20), ball_radii_[0],
-                             ci::Color(game_particle_colors_[2]), Type::EightBall));
-  game_balls_.push_back(Ball(break_position + vec2(-40, 20 + 2 * 20), ball_radii_[0],
-                             ci::Color(game_particle_colors_[1]), Type::Blue));
-  //4th row
-  game_balls_.push_back(Ball(break_position + vec2(-60, 30 + 0 * 20), ball_radii_[0],
-                             ci::Color(game_particle_colors_[0]), Type::Red));
-  game_balls_.push_back(Ball(break_position + vec2(-60, 30 + 1 * 20), ball_radii_[0],
-                             ci::Color(game_particle_colors_[1]), Type::Blue));
-  //5th row
-  game_balls_.push_back(Ball(break_position + vec2(-80, 40 + 0 * 20), ball_radii_[0],
-                             ci::Color(game_particle_colors_[1]), Type::Blue));
+  size_t num_rows = 5; // number of rows in a break formation
+
+  for (size_t i = 0; i < num_rows; i++){
+    for (size_t j = 0; j < i+1; j++){
+        if (i == 2 && j == 1){
+          // push back 8ball in this specific position
+          game_balls_.push_back(Ball(
+              break_position + vec2(0, j*2*ball_radii_),
+              ball_radii_,ci::Color(game_particle_colors_[2]), Type::EightBall));
+        }
+        else if ((i == 2 || i ==4) && j == 0 ){
+          // push back blue balls in these specific positions
+          game_balls_.push_back(Ball(
+              break_position + vec2(0,j*2*ball_radii_),
+              ball_radii_,ci::Color(game_particle_colors_[1]), Type::Blue));
+        }
+        else if ((j%2 == 0)){
+          // alternates coloring between red and blue balls
+          game_balls_.push_back(Ball(
+              break_position + vec2(0,j*2*ball_radii_),
+              ball_radii_,ci::Color(game_particle_colors_[0]), Type::Red));
+        }
+        else {
+          game_balls_.push_back(Ball(
+              break_position + vec2(0,j*2*ball_radii_),
+              ball_radii_,ci::Color(game_particle_colors_[1]), Type::Blue));
+        }
+      }
+    break_position += vec2(2*ball_radii_, -1*ball_radii_); // updating start loc of drawing for next row
+  }
 
   //position of pockets that are at the table
   pockets_.push_back(top_left_corner_);
@@ -73,9 +68,9 @@ void Board::Draw() const {
   //draw brown outer table
   ci::gl::color(ci::Color("brown"));
   glm::vec2 tl = top_left_corner_ + vec2(-50, -50);
-  glm::vec2 br = bottom_right_corner_ + vec2(50, 50);
+  glm::vec2 br = bottom_right_corner_ + vec2(50, 50); // 50 is difference in size between outer table and board
   ci::Rectf box(tl, br);
-  ci::gl::drawSolidRoundedRect(box, 20);
+  ci::gl::drawSolidRoundedRect(box, 20); // 20 is the rounded factor of the table
 
   //draw green background
   ci::Rectf pixel_bounding_box(top_left_corner_, bottom_right_corner_);
@@ -85,16 +80,15 @@ void Board::Draw() const {
   //drawing the pockets on the board
   for (size_t i = 0; i < pockets_.size(); i++) {
     ci::gl::color(ci::Color("black"));
-    ci::gl::drawSolidCircle(pockets_.at(i), 20);
+    ci::gl::drawSolidCircle(pockets_.at(i), pocket_radius_);
     ci::gl::color(ci::Color("white"));
-    ci::gl::drawStrokedCircle(pockets_.at(i), 20);
+    ci::gl::drawStrokedCircle(pockets_.at(i), pocket_radius_);
   }
 
   //implemented drawing of cue
   ci::gl::color(ci::Color("white"));
   vec2 hit_dr = CalculateHitDirection(mouse_);
   if (next_turn_ == true && game_balls_.size() > 0 && game_balls_.at(0).GetType() == Type::Cue) {
-    ci::gl::lineWidth(5.0);
     ci::gl::drawLine(game_balls_.at(0).GetPosition(), game_balls_.at(0).GetPosition() + hit_dr * 100.0f);
   }
 
@@ -141,7 +135,7 @@ void Board::Update() {
   }
   next_turn_ = true;
   for (size_t i = 0; i < game_balls_.size(); i++) {
-    if (game_balls_.at(i).HasStopped() == false) {
+    if (!game_balls_.at(i).HasStopped()) {
       // if balls are still moving, next turn hasn't started
       next_turn_ = false;
     }
@@ -154,14 +148,10 @@ void Board::HandleCueBallHit(Ball& cue, const glm::vec2& mouse_coords, float for
   }
 }
 
-std::vector<Ball> Board::GetParticles() const {
-  return game_balls_;
-}
-
 bool Board::CheckIfPocketed(Ball& ball) {
   //if ball is pocketed add it to the pockets_ vector
   for (size_t i = 0; i < pockets_.size(); i++) {
-    if (glm::length(ball.GetPosition() - pockets_.at(i)) < 30) {
+    if (glm::length(ball.GetPosition() - pockets_.at(i)) < (pocket_radius_ + ball_radii_)) {
       return true;
     }
   }
@@ -172,7 +162,7 @@ void Board::UpdateMousePosition(const glm::vec2& mouse_coords) {
   mouse_ = mouse_coords;
 }
 
-bool Board::GetTurnStatus() {
+bool Board::GetTurnStatus() const{
   return next_turn_;
 }
 
@@ -180,7 +170,7 @@ std::vector<Ball>& Board::GetGameBalls() {
   return game_balls_;
 }
 
-std::vector<Ball> Board::GetPocketedBalls() {
+std::vector<Ball> Board::GetPocketedBalls() const {
   return pocketed_balls_;
 }
 
@@ -197,10 +187,11 @@ bool Board::AddCueBall(glm::vec2 mouse_coords) {
 
   if (inside_x_bound && inside_y_bound) {
     // insert cue ball if the mouse coords are within the board
-    game_balls_.insert(game_balls_.begin(), Ball(mouse_coords, ball_radii_[0],
+    game_balls_.insert(game_balls_.begin(), Ball(mouse_coords, ball_radii_,
                                                  ci::Color("white"), Type::Cue));
     return true;
   }
+  // return false if given coords are not in game board bounds
   return false;
 }
 
