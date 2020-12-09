@@ -34,14 +34,7 @@ void PoolApp::draw() {
                                  glm::vec2(getWindowWidth() * .5, 80), ci::Color("black"));
     }
 
-    // drawing signs for the player ball racks
-    ci::gl::drawStringCentered("Player 1",
-                               glm::vec2(getWindowWidth() * .075, 120), ci::Color("black"));
-    ci::gl::drawStringCentered("Player 2",
-                               glm::vec2(getWindowWidth() * .925, 120), ci::Color("black"));
-
     DrawGameExternalities();  // draws player ball racks and power bar
-
     // draw game_board_
     game_board_.Draw();
   }
@@ -176,8 +169,15 @@ void PoolApp::DrawStartScreen() {
 }
 
 void PoolApp::DrawGameExternalities() {
-  // drawing ball racks for players
+  // drawing signs for the player ball racks
+  ci::gl::drawStringCentered(
+      "Player 1's Balls",glm::vec2(getWindowWidth() * .075, getWindowHeight()*.25),
+      ci::Color("black"), ci::Font("Times New Roman", 15));
+  ci::gl::drawStringCentered(
+      "Player 2's Balls",glm::vec2(getWindowWidth() * .925, getWindowHeight()*.25),
+      ci::Color("black"), ci::Font("Times New Roman", 15));
 
+  // drawing ball racks for players
   // draw ball rack for player 1
   ci::gl::color(ci::Color("grey"));
   ci::Rectf player_one_rack(getWindowWidth()*.05, getWindowHeight()*.3, getWindowWidth()*.08,

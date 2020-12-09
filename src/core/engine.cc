@@ -26,11 +26,9 @@ namespace pool{
           balls_assigned_this_turn = true;
         }
       }
-
       std::vector<size_t> counts = CountBallTypes(game_board);
 
       CheckForWinner(counts);
-
       UpdateScores(counts);
 
       if (counts[2] == 1 && winner_ == 0){
@@ -46,8 +44,6 @@ namespace pool{
       }
 
       CheckForExtraTurn(counts);
-
-      //is_player_one_turn_prev = is_player_one_turn_;
       is_player_one_turn_ = !is_player_one_turn_; // flip player turn
       has_changed_ = true;
 

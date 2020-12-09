@@ -35,7 +35,6 @@ class PoolApp : public ci::app::App {
   const double max_force_ = 20.0; // max force given to a mouse drag
   bool is_start_screen_; // determines when start screen is shown
 
-
   /**
    * Calculates force applied to ball based on mouse movement
    */
