@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 set(CMAKE_CXX_STANDARD 11)
 project(pool-app)
-#naive-bayes
+
 # This tells the compiler to not aggressively optimize and
 # to include debugging information so that the debugger
 # can properly read what's going on.
@@ -57,22 +57,6 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
         src/visualizer/board.cc)
 
 list(APPEND TEST_FILES tests/ball_physics_test.cc tests/board_test.cc tests/game_engine_test.cc)
-
-#FetchContent_Declare(
-#        box2d
-#        GIT_REPOSITORY https://github.com/erincatto/box2d.git
-#        #GIT_TAG v2.x
-#)
-
-#FetchContent_GetProperties(box2d)
-#if(NOT box2d_POPULATED)
-#    FetchContent_Populate(box2d)
-#    add_library(box2d INTERFACE)
-#    target_include_directories(box2d INTERFACE ${box2d_SOURCE_DIR})
-#endif()
-
-#find_package(box2d REQUIRED)
-#target_link_libraries(mytarget PRIVATE box2d)
 
 ci_make_app(
         APP_NAME        Pool-Game
