@@ -63,7 +63,6 @@ ci_make_app(
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         apps/cinder_app_main.cc ${SOURCE_FILES}
         INCLUDES        include
-#        BLOCKS          Box2D
 )
 
 ci_make_app(
@@ -75,5 +74,5 @@ ci_make_app(
 )
 
 if(MSVC)
-    set_property(TARGET naive-bayes-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
+    set_property(TARGET Pool-Game-Sim-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
 endif()
