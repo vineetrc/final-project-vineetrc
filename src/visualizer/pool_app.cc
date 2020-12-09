@@ -45,7 +45,7 @@ void PoolApp::draw() {
     // draw game_board_
     game_board_.Draw();
   }
-  else{
+  else {
     DrawStartScreen();
   }
 }

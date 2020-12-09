@@ -87,7 +87,7 @@ void Engine::CalculatePlayerBalls(visualizer::Board& game_board) {
       if (is_player_one_turn_) {
         red_ball_player_ = 2;
       }
-      else{
+      else {
         red_ball_player_ = 1;
       }
     }
@@ -172,7 +172,7 @@ void Engine::CheckForWinner(const std::vector<size_t>& counts) {
         player_one_score_++;
         winner_ = 1;
       }
-      else{
+      else {
         // loser by fouling
         winner_ = 2;
       }
@@ -187,7 +187,7 @@ void Engine::CheckForWinner(const std::vector<size_t>& counts) {
         player_two_score_++;
         winner_ = 2;
       }
-      else{
+      else {
         // loser by fouling
         winner_ = 1;
       }
