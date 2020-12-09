@@ -7,7 +7,7 @@ Ball::Ball(const glm::vec2& init_position, size_t radius, ci::Color color, Type 
   radius_ = radius;
   color_ = color;
   type_ = type;
-  first_ball_collision_ = Type::None; // initial collision doesnt happen
+  first_ball_collision_ = Type::None; // initial collision doesnt happen yet
 }
 
 void Ball::UpdateVelocitiesAfterCollision(const glm::vec2& x_diff_this, const glm::vec2& x_diff_other,
@@ -34,7 +34,7 @@ void Ball::HandleParticleCollision(Ball& other) {
   if (dot_product_this < 0 && glm::length(x_diff_this) < (radius_ + other.radius_)) {
     //determines if two particles are moving towards each other and are intersecting
     if(type_ == Type::Cue  && first_ball_collision_ == Type::None ){
-      // if this is the cue ball, change the variable to color of first collision
+      // if this is the cue ball, change the variable to type of the ball's first collision with another ball
       first_ball_collision_ = other.GetType();
     }
     UpdateVelocitiesAfterCollision(x_diff_this, x_diff_other, dot_product_this, dot_product_other, other);
@@ -107,10 +107,6 @@ glm::vec2 Ball::GetPosition() const {
 
 glm::vec2 Ball::GetVelocity() const {
   return velocity_;
-}
-
-double Ball::GetSpeed() const {
-  return glm::length(velocity_);
 }
 
 Type Ball::GetType() const {

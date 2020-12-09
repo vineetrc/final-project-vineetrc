@@ -238,6 +238,7 @@ std::vector<size_t> Engine::CountBallTypes(visualizer::Board& game_board) const{
 
 void Engine::CheckIncorrectColorHit(visualizer::Board& game_board, bool balls_assigned_this_turn) {
   if (!has_cue_ball_sunk_ && red_ball_player_ == 0 && winner_ == 0 && !is_first_turn_){
+    // player can only not hit 8ball at the beginning of the game
     hit_same_color_ball_ = game_board.GetGameBalls().at(0).GetFirstBallCollision() == Type::EightBall;
   }
 
@@ -249,7 +250,6 @@ void Engine::CheckIncorrectColorHit(visualizer::Board& game_board, bool balls_as
     else if (!is_player_one_turn_ && player_two_score_ == 7){
       hit_same_color_ball_ = game_board.GetGameBalls().at(0).GetFirstBallCollision() != Type::EightBall;
     }
-
     // checks if ball hits the wrong color
     else if (red_ball_player_ == 1 && is_player_one_turn_){
       hit_same_color_ball_ = game_board.GetGameBalls().at(0).GetFirstBallCollision() != Type::Red;

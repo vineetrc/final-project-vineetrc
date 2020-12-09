@@ -1,14 +1,11 @@
 #pragma once
-//#ifndef NAIVE_BAYES_PARTICLE_H
-//#define NAIVE_BAYES_PARTICLE_H
-//#endif //NAIVE_BAYES_PARTICLE_H
 #include "cinder/gl/gl.h"
 #include <cmath>
 
 namespace pool {
 
 /**
- * Represents ID for the 3 particle types in the simulator, and a None type for collission detection
+ * Represents ID for the 3 particle types in the simulator, and a None type for collision detection
  */
 enum class Type { Cue , Red , Blue , EightBall, None };
 
@@ -18,7 +15,7 @@ class Ball {
   /**
    * Creates a ball at a position coordinate with the given color and type
    */
-  Ball(const glm::vec2 &init_position, size_t radius, ci::Color color ,Type type);
+  Ball(const glm::vec2& init_position, size_t radius, ci::Color color ,Type type);
 
   /**
    * Handles collisions with simulation boundary
@@ -41,8 +38,6 @@ class Ball {
    */
   bool HasStopped();
 
-  double GetSpeed() const;
-
   glm::vec2 GetVelocity() const;
 
   glm::vec2 GetPosition() const;
@@ -54,17 +49,23 @@ class Ball {
   Type GetType() const;
 
   /**
-   * Resets the first ball type to None
+   * Resets the first ball collision type to None
    */
   void ClearFirstBallCollision();
 
   /**
-   * Returns the Type of the first ball, this ball object collides with
+   * Returns the Type of the first ball this ball object collides with
    */
   Type GetFirstBallCollision() const;
 
+  /**
+   * Setter for collision variable for testing purposes
+   */
   void SetFirstBallCollision(Type type);
 
+  /**
+   * Set velocity for testing purposes
+   */
   void SetVelocity(const glm::vec2& v_coords);
 
  private:
