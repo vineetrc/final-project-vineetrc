@@ -6,7 +6,7 @@ This project is an implementation of the classic 8-ball Pool Game. In this Game 
 Objective of the Game: Sink all your own color balls and then the 8ball.
 
 ### Caveats:
-- First cunk ball will determine a player's ball colors
+- First sunk ball will determine a player's ball colors
 - Sinking the 8ball before sinking all your other 7 colored balls results in an automatic loss. Opponent wins
 - Sinking the cue ball on any turn allows the other player to place the cue ball anywhere on the board
 - Sinking a ball of your own color results in a second consecutive shot, unless a foul has been committed 
