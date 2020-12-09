@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 set(CMAKE_CXX_STANDARD 11)
-project(naive-bayes)
+project(pool-app)
 
 # This tells the compiler to not aggressively optimize and
 # to include debugging information so that the debugger
@@ -58,28 +58,11 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
 
 list(APPEND TEST_FILES tests/ball_physics_test.cc tests/board_test.cc tests/game_engine_test.cc)
 
-#FetchContent_Declare(
-#        box2d
-#        GIT_REPOSITORY https://github.com/erincatto/box2d.git
-#        #GIT_TAG v2.x
-#)
-
-#FetchContent_GetProperties(box2d)
-#if(NOT box2d_POPULATED)
-#    FetchContent_Populate(box2d)
-#    add_library(box2d INTERFACE)
-#    target_include_directories(box2d INTERFACE ${box2d_SOURCE_DIR})
-#endif()
-
-#find_package(box2d REQUIRED)
-#target_link_libraries(mytarget PRIVATE box2d)
-
 ci_make_app(
         APP_NAME        Pool-Game
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         apps/cinder_app_main.cc ${SOURCE_FILES}
         INCLUDES        include
-#        BLOCKS          Box2D
 )
 
 ci_make_app(
@@ -91,5 +74,5 @@ ci_make_app(
 )
 
 if(MSVC)
-    set_property(TARGET naive-bayes-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
+    set_property(TARGET Pool-Game-Sim-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
 endif()

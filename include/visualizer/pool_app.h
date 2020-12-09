@@ -6,12 +6,10 @@
 #include "core/engine.h"
 
 namespace pool {
-
 namespace visualizer {
 
 /**
- * Allows a user to draw a digit on a sketchpad and uses Naive Bayes to
- * classify it.
+ * Allows User to play a Standard Game of 8ball Pool
  */
 class PoolApp : public ci::app::App {
  public:
@@ -24,19 +22,33 @@ class PoolApp : public ci::app::App {
   void keyDown(ci::app::KeyEvent event) override;
   void mouseDrag(ci::app::MouseEvent event) override;
   void mouseMove(ci::app::MouseEvent event) override;
-  const double kWindowSize = 900; //875
-  const double kMargin = 10; //100
+  const double window_size_x_ = 1400;
+  const double window_size_y_ = 800;
 
  private:
   Board game_board_;
   glm::vec2 init_coords_; // starting coords of the drag action
   glm::vec2 end_coords_; // ending coords of the drag action
-  double force_;
+  double force_; // real-time force based on user mouse drag
   size_t update_speed_;
   Engine game_engine_;
   const double max_force_ = 20.0; // max force given to a mouse drag
+  bool is_start_screen_; // determines when start screen is shown
 
-  void CalculateForce(); // Calculates force applied to ball based on mouse movement
+  /**
+   * Calculates force applied to ball based on mouse movement
+   */
+  void CalculateForce();
+
+  /**
+   *  Draws the power bar and player racks
+   */
+  void DrawGameExternalities();
+
+  /**
+   * Draws Start Screen of Game
+   */
+  void DrawStartScreen();
 };
 }  // namespace visualizer
 }  // namespace pool
