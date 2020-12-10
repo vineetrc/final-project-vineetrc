@@ -16,7 +16,7 @@ Board::Board(const vec2& top_left_corner, double x_boundary_dim, double y_bounda
 
   //cue ball is first in the list of game balls
   glm::vec2 cueball_pos = top_left_corner_ + vec2(.25 * x_boundary_dim, .5 * y_boundary_dim);
-  game_balls_.push_back(Ball(cueball_pos, ball_radii_,
+  game_balls_.push_back(Ball(cueball_pos, kBall_radii,
                              ci::Color("white"), Type::Cue));
 
   // arranging triangle formation
@@ -31,28 +31,28 @@ Board::Board(const vec2& top_left_corner, double x_boundary_dim, double y_bounda
         if (i == 2 && j == 1){
           // push back 8ball in this specific position
           game_balls_.push_back(Ball(
-              break_position + vec2(0, j*2*ball_radii_),
-              ball_radii_,ci::Color(game_particle_colors_[2]), Type::EightBall));
+              break_position + vec2(0, j*2*kBall_radii),
+              kBall_radii, ci::Color(kGame_particle_colors[2]), Type::EightBall));
         }
         else if ((i == 2 || i ==4) && j == 0 ){
           // push back blue balls in these specific positions
           game_balls_.push_back(Ball(
-              break_position + vec2(0,j*2*ball_radii_),
-              ball_radii_,ci::Color(game_particle_colors_[1]), Type::Blue));
+              break_position + vec2(0,j*2*kBall_radii),
+              kBall_radii, ci::Color(kGame_particle_colors[1]), Type::Blue));
         }
         else if ((j%2 == 0)){
           // alternates coloring between red and blue balls
           game_balls_.push_back(Ball(
-              break_position + vec2(0,j*2*ball_radii_),
-              ball_radii_,ci::Color(game_particle_colors_[0]), Type::Red));
+              break_position + vec2(0,j*2*kBall_radii),
+              kBall_radii, ci::Color(kGame_particle_colors[0]), Type::Red));
         }
         else {
           game_balls_.push_back(Ball(
-              break_position + vec2(0,j*2*ball_radii_),
-              ball_radii_,ci::Color(game_particle_colors_[1]), Type::Blue));
+              break_position + vec2(0,j*2*kBall_radii),
+              kBall_radii, ci::Color(kGame_particle_colors[1]), Type::Blue));
         }
       }
-    break_position += vec2(2*ball_radii_, -1*ball_radii_); // updating start loc of drawing for next row
+    break_position += vec2(2*kBall_radii, -1*kBall_radii); // updating start loc of drawing for next row
   }
 
   //position of pockets that are at the table
@@ -80,9 +80,9 @@ void Board::Draw() const {
   //drawing the pockets on the board
   for (size_t i = 0; i < pockets_.size(); i++) {
     ci::gl::color(ci::Color("black"));
-    ci::gl::drawSolidCircle(pockets_.at(i), pocket_radius_);
+    ci::gl::drawSolidCircle(pockets_.at(i), kPocket_radius);
     ci::gl::color(ci::Color("white"));
-    ci::gl::drawStrokedCircle(pockets_.at(i), pocket_radius_);
+    ci::gl::drawStrokedCircle(pockets_.at(i), kPocket_radius);
   }
 
   //implemented drawing of cue
@@ -121,7 +121,7 @@ void Board::Update() {
     for (size_t j = i; j < game_balls_.size(); j++) {
       game_balls_.at(i).HandleParticleCollision(game_balls_.at(j));
     }
-    game_balls_.at(i).UpdatePosition(stop_point_, friction_force_);
+    game_balls_.at(i).UpdatePosition(kStop_point, kFriction_force);
     game_balls_.at(i).HandleBoundaryCollision(top_left_corner_, bottom_right_corner_);
   }
 
@@ -151,7 +151,7 @@ void Board::HandleCueBallHit(Ball& cue, const glm::vec2& mouse_coords, float for
 bool Board::CheckIfPocketed(Ball& ball) {
   //if ball is pocketed add it to the pockets_ vector
   for (size_t i = 0; i < pockets_.size(); i++) {
-    if (glm::length(ball.GetPosition() - pockets_.at(i)) < (pocket_radius_ + ball_radii_)) {
+    if (glm::length(ball.GetPosition() - pockets_.at(i)) < (kPocket_radius + kBall_radii)) {
       return true;
     }
   }
@@ -187,7 +187,7 @@ bool Board::AddCueBall(glm::vec2 mouse_coords) {
 
   if (inside_x_bound && inside_y_bound) {
     // insert cue ball if the mouse coords are within the board
-    game_balls_.insert(game_balls_.begin(), Ball(mouse_coords, ball_radii_,
+    game_balls_.insert(game_balls_.begin(), Ball(mouse_coords, kBall_radii,
                                                  ci::Color("white"), Type::Cue));
     return true;
   }

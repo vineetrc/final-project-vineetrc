@@ -4,10 +4,10 @@ namespace pool {
 namespace visualizer {
 
 PoolApp::PoolApp()
-    : game_board_(game_loc_, game_size_x_, game_size_y_),
+    : game_board_(kGame_loc, kGame_size_x, kGame_size_y),
     game_engine_(){
 
-  ci::app::setWindowSize(window_size_x_, window_size_y_);
+  ci::app::setWindowSize(kWindow_size_x, kWindow_size_y);
   update_speed_ = 1; //number of simulation 'steps' gone thru on one update call
   is_start_screen_ = true;
 }
@@ -130,8 +130,8 @@ void PoolApp::keyDown(ci::app::KeyEvent event) {
 
 void PoolApp::CalculateForce() {
   force_ = .1 * glm::length(init_coords_ - end_coords_);
-  if (force_ > max_force_) {
-    force_ = max_force_; // max power for a possible hit
+  if (force_ > kMax_force) {
+    force_ = kMax_force; // max power for a possible hit
   }
 }
 
@@ -221,11 +221,11 @@ void PoolApp::DrawGameExternalities() {
 
   // drawing force bar of variable length
   ci::gl::color(ci::Color("red"));
-  bottom_right.x = getWindowWidth()*.5 - 120 + 240*(force_/max_force_);
+  bottom_right.x = getWindowWidth()*.5 - 120 + 240*(force_/kMax_force);
   ci::Rectf power_bar(top_left,bottom_right);
   ci::gl::drawSolidRoundedRect(power_bar, 20);
   ci::gl::drawStringCentered(
-      std::to_string((force_/max_force_)*100).substr(0,4)+"%",
+      std::to_string((force_/kMax_force)*100).substr(0, 4)+"%",
       glm::vec2(getWindowWidth()*.5,getWindowHeight()*.85+25),ci::Color("black"));
 
 }

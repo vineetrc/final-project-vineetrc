@@ -6,8 +6,8 @@
 namespace pool {
 namespace visualizer {
  // constants for the 3 different types of particles
- static const double ball_radii_ = 10;
- static const std::vector<ci::Color> game_particle_colors_ = {"red", "blue", "black"};
+ static const double kBall_radii = 10;
+ static const std::vector<ci::Color> kGame_particle_colors = {"red", "blue", "black"};
 
 /**
  * A Board that represents the environment in which the gas particles interact
@@ -117,11 +117,11 @@ class Board {
 
   bool next_turn_; // represents if player can hit a ball to start a new 'play'
 
-  const double stop_point_ = 0.1; // friction parameters
+  const double kStop_point = 0.1; // friction parameters
 
-  const double friction_force_ = .0125; //friction parameters
+  const double kFriction_force = .0125; //friction parameters
 
-  const double pocket_radius_ = 20.0;
+  const double kPocket_radius = 20.0;
 
   /**
    * Helper method that gives cueball a certain velocity to create the 'hit'

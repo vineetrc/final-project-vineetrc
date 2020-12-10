@@ -107,7 +107,7 @@ class Engine {
 
   bool is_first_turn_; // returns true if its the first turn of the game
 
-  const size_t winning_score_ = 8;
+  const size_t kWinning_score = 8; // score at which player wins
   /**
    * counts all the different types of pocketed balls in a run
    */

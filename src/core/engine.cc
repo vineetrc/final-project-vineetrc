@@ -164,7 +164,7 @@ void Engine::CheckForWinner(const std::vector<size_t>& counts) {
   if (is_player_one_turn_){
     if (counts[3] == 1){
       // winner by sinking 8ball correctly
-      if (player_one_score_ == winning_score_-1){
+      if (player_one_score_ == kWinning_score-1){
         player_one_score_++;
         winner_ = 1;
       }
@@ -178,7 +178,7 @@ void Engine::CheckForWinner(const std::vector<size_t>& counts) {
   // determines if player two wins due to pocketing 8 ball
   if (!is_player_one_turn_){
     if (counts[3] == 1){
-      if (player_two_score_ == winning_score_-1){
+      if (player_two_score_ == kWinning_score-1){
         // winner by sinking 8bal
         player_two_score_++;
         winner_ = 2;
@@ -298,7 +298,7 @@ std::string Engine::GetGameMessage(const visualizer::Board& game_board) const{
 }
 
 size_t Engine::GetWinningScore() const {
-    return winning_score_;
+    return kWinning_score;
 }
 }
 

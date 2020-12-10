@@ -22,11 +22,11 @@ class PoolApp : public ci::app::App {
   void keyDown(ci::app::KeyEvent event) override;
   void mouseDrag(ci::app::MouseEvent event) override;
   void mouseMove(ci::app::MouseEvent event) override;
-  const double window_size_x_ = 1400;
-  const double window_size_y_ = 800;
-  const double game_size_x_ = 800;
-  const double game_size_y_ = 350;
-  const glm::vec2 game_loc_ = glm::vec2(300, 200);
+  const double kWindow_size_x = 1400;
+  const double kWindow_size_y = 800;
+  const double kGame_size_x = 800;
+  const double kGame_size_y = 350;
+  const glm::vec2 kGame_loc = glm::vec2(300, 200);
 
  private:
   Board game_board_;
@@ -35,7 +35,7 @@ class PoolApp : public ci::app::App {
   double force_; // real-time force based on user mouse drag
   size_t update_speed_;
   Engine game_engine_;
-  const double max_force_ = 20.0; // max force given to a mouse drag
+  const double kMax_force = 20.0; // max force given to a mouse drag
   bool is_start_screen_; // determines when start screen is shown
 
   /**
