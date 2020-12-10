@@ -4,7 +4,7 @@ namespace pool {
 namespace visualizer {
 
 PoolApp::PoolApp()
-    : game_board_(glm::vec2(300, 200), 800 , 350),
+    : game_board_(game_loc_, game_size_x_, game_size_y_),
     game_engine_(){
 
   ci::app::setWindowSize(window_size_x_, window_size_y_);
@@ -26,12 +26,13 @@ void PoolApp::draw() {
     // displays message of Winning condition, Player turn, or to place the cue ball due to a foul
     ci::gl::drawStringCentered(game_engine_.GetGameMessage(game_board_),
                                glm::vec2(getWindowWidth() * .5, 50),
-                               ci::Color("black"));
+                               ci::Color("black"), ci::Font("Times New Roman", 15));
 
     // displays which player turn it is
     if (game_engine_.GetWinCondition() == 0) {
       ci::gl::drawStringCentered(player_turn + " turn",
-                                 glm::vec2(getWindowWidth() * .5, 80), ci::Color("black"));
+                                 glm::vec2(getWindowWidth() * .5, 80),
+                                 ci::Color("black"), ci::Font("Times New Roman", 15));
     }
 
     DrawGameExternalities();  // draws player ball racks and power bar

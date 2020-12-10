@@ -24,6 +24,9 @@ class PoolApp : public ci::app::App {
   void mouseMove(ci::app::MouseEvent event) override;
   const double window_size_x_ = 1400;
   const double window_size_y_ = 800;
+  const double game_size_x_ = 800;
+  const double game_size_y_ = 350;
+  const glm::vec2 game_loc_ = glm::vec2(300, 200);
 
  private:
   Board game_board_;
